@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+    <head>
+        <title>Создание пост</title>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+    </head>
+    <body>
+        <nav th:replace="~{fragments :: header}"></nav>
+        <div class="container col-10 col-md-8 col-lg-4 mt-3 text-center">
+            <form action="/postEntities" method="post" th:object="${post}" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <h1>Ваш пост</h1>
+                <!-- Image -->
+                <input class="mt-5" type="file" name="file" accept="imageEntity/jpeg, imageEntity/png" required>
+
+                <!-- Title -->
+                <input th:field="*{title}"
+                       class="form-control mt-3"
+                       type="text"
+                       required
+                       placeholder="Название"
+                       maxlength="10">
+
+                <!-- Submit -->
+                <input type="submit" class="btn btn-primary mt-4" value="Опубликовать">
+            </form>
+        </div>
+    </body>
+</html>

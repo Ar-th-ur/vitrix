@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+    <head>
+        <title>Регистрация</title>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+    </head>
+    <body>
+        <nav th:replace="~{fragments :: header}"></nav>
+        <div class="container col-10 col-md-6 col-lg-4 mt-5 text-center">
+            <form action="/auth/registration" method="post" th:object="${user}" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+                <!-- Avatar -->
+                <input class="form-control" type="file" name="file" required/>
+
+                <!-- Error message -->
+                <div th:if="${error}">
+                    <div class="alert alert-danger mt-4">
+                        <span th:text="#{error.message.registration}"></span>
+                    </div>
+                </div>
+
+                <!-- Username input -->
+                <div class="form-floating mt-3 gx-1">
+                    <input name="username"
+                           required
+                           type="text"
+                           id="login"
+                           class="form-control"
+                           maxlength="50"
+                           placeholder="Логин"/>
+                    <label for="login">Логин</label>
+                </div>
+
+                <!-- Password input -->
+                <div class="input-group mt-2">
+                    <div class="form-floating">
+                        <input name="password"
+                               required
+                               type="password"
+                               id="password"
+                               class="form-control"
+                               maxlength="100"
+                               aria-describedby="eye"
+                               placeholder="Пароль"/>
+                        <label for="password">Пароль</label>
+                    </div>
+                    <span class="input-group-text" onclick="password_show_hide();" id="eye">
+                    <i class="fas fa-eye" id="show_eye"></i>
+                    <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                    </span>
+                </div>
+
+                <!-- Submit button -->
+                <input type="submit" class="btn btn-primary btn-block mt-3" value="Зарегистрироваться" style="width: 100%">
+
+                <!-- Register buttons -->
+                <div class="text-center mt-5">
+                    <p>Уже есть аккаунт? <a href="/auth/login">Войти</a></p>
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript" src="/js/script.js"></script>
+    </body>
+</html>

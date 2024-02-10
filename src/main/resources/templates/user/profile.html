@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+    <head>
+        <title>Профиль</title>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+    </head>
+    <body>
+        <nav th:replace="~{fragments :: header}"></nav>
+        <div class="container col-10 col-md-8">
+            <!-- Information -->
+            <div class="col mt-5">
+                <img th:src="@{/api/v1/images/{id}(id = ${user.avatar.id})}"
+                     alt=""
+                     style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; object-position: center;">
+                <b th:text="'&nbsp;&nbsp;&nbsp;' + ${user.username}"></b>
+                <i th:text="${user.dateOfCreation}">текст</i>
+            </div>
+
+            <!-- Posts -->
+            <hr>
+
+            <h2 class="text-center mt-5" th:if="${user.getPosts.isEmpty()}">Пусто :(</h2>
+            <div class="row row-cols-md-3 row-cols-lg-4 mt-5">
+                <div class="mb-4" style="width: 18rem;" th:each="post : ${user.getPosts()}">
+                    <form action="/posts" th:method="DELETE" enctype="multipart/form-data">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input type="hidden" name="postId" th:value="${post.id}">
+                        <!-- Post -->
+                        <div class="card">
+                            <!-- Image -->
+                            <img th:src="@{/api/v1/images/{id}(id = ${post.imageEntity.id})}"
+                                 class="card-img-top"
+                                 style="max-width: 100%"
+                                 alt="...">
+                            <div class="card-body">
+                                <div class="card-subtitle">
+                                    <!-- Title -->
+                                    <b th:text="${post.title}">Название</b>
+                                    <!-- Date -->
+                                    <i class="small" th:text="${post.dateOfCreation}">12.02.2023</i>
+                                </div>
+                            </div>
+
+                            <!-- Delete button -->
+                            <button th:if="${isOwner}"
+                                    class="alert alert-danger ms-2 me-2 p-1 mb-2"
+                                    type="submit">
+                                Удалить пост
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
