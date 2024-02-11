@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.vitrix.entity.base.BaseEntity;
 
 import java.io.IOException;
 

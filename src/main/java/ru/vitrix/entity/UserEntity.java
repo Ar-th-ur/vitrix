@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.vitrix.entity.auxiliary.Role;
+import ru.vitrix.entity.base.BaseAuditEntity;
 
 import java.util.*;
 
@@ -15,7 +17,7 @@ import java.util.*;
 @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"avatar", "password", "posts"})
 @Table(name = "users")
-public class UserEntity extends BaseEntityAudit implements UserDetails {
+public class UserEntity extends BaseAuditEntity implements UserDetails {
 
     @Column(name = "username", unique = true)
     private String username;
@@ -23,8 +25,8 @@ public class UserEntity extends BaseEntityAudit implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "active")
-    private boolean isActive = true;
+    @Column(name = "enabled")
+    private boolean isEnabled = true;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "owner")
     private List<PostEntity> posts = new ArrayList<>();
@@ -65,6 +67,6 @@ public class UserEntity extends BaseEntityAudit implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return isEnabled;
     }
 }

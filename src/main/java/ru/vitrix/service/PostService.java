@@ -1,17 +1,17 @@
 package ru.vitrix.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.entity.PostEntity;
-import ru.vitrix.request.PostRequest;
+import ru.vitrix.dto.request.PostRequest;
+import ru.vitrix.dto.response.PageResponse;
+import ru.vitrix.dto.response.entity.PostResponse;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface PostService {
-    void save(PostRequest postRequest, String username, MultipartFile file);
+    PostResponse save(PostRequest postRequest, String username, MultipartFile file);
 
     void deleteById(UUID id);
 
-    List<PostEntity> findAll(String title);
+    PageResponse<PostResponse> getAll(String title, int pageNumber, int size);
 
 }

@@ -1,13 +1,12 @@
 package ru.vitrix.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.request.UserRequest;
+import ru.vitrix.dto.request.UserRequest;
 import ru.vitrix.service.impl.UserServiceImpl;
 
 @Controller

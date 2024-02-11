@@ -1,17 +1,16 @@
 package ru.vitrix.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.entity.PostEntity;
-import ru.vitrix.request.PostRequest;
+import ru.vitrix.dto.request.PostRequest;
+import ru.vitrix.dto.response.PageResponse;
+import ru.vitrix.dto.response.entity.PostResponse;
 import ru.vitrix.service.impl.PostServiceImpl;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -22,12 +21,14 @@ public class PostController {
 
     @GetMapping
     public String posts(
-            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "search", defaultValue = "") String search,
+            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             Model model
     ) {
-        List<PostEntity> postEntities = service.findAll(search);
+        PageResponse<PostResponse> pageResponse = service.getAll(search, pageNo, size);
         model.addAttribute("search", search);
-        model.addAttribute("posts", postEntities);
+        model.addAttribute("page", pageResponse);
         return "index";
     }
 

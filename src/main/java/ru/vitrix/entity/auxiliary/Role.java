@@ -1,4 +1,4 @@
-package ru.vitrix.entity;
+package ru.vitrix.entity.auxiliary;
 
 import org.springframework.security.core.GrantedAuthority;
 

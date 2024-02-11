@@ -37,17 +37,17 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/postEntities">Главная</a>
+                        <a class="nav-link active" aria-current="page" href="/posts">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active"
                            aria-current="page"
-                           href="/userEntity/profile">Мой профиль</a>
+                           href="/user/profile">Мой профиль</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active"
                            aria-current="page"
-                           href="/postEntities/create">Создать пост</a>
+                           href="/posts/create">Создать пост</a>
                     </li>
                     <li sec:authorize="!isAuthenticated()" class="nav-item">
                         <form action="/auth/login" method="get">
@@ -59,7 +59,7 @@
                         </form>
                     </li>
                     <li sec:authorize="isAuthenticated()" class="nav-item">
-                        <form action="/auth/logout" method="postRequest">
+                        <form action="/auth/logout" method="post">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <button type="submit"
                                     class="nav-link active"

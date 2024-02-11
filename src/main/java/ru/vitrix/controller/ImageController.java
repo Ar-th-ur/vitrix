@@ -23,7 +23,7 @@ public class ImageController {
     public ResponseEntity<?> getImage(@PathVariable UUID id) {
         var image = imageRepository.findById(id).orElse(null);
         if (image == null) {
-            return ResponseEntity.ok(image);
+            return ResponseEntity.ok(null);
         }
         var body = new InputStreamResource(new ByteArrayInputStream(image.getBytes()));
         return ResponseEntity.ok()

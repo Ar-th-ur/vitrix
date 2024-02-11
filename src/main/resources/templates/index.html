@@ -8,7 +8,7 @@
         <nav th:replace="~{fragments :: header}"></nav>
         <div class="container col-10 text-center">
             <!-- Search -->
-            <form class="d-flex mt-5" role="search" method="get" action="/postEntities">
+            <form class="d-flex mt-5" role="search" method="get" action="/posts">
                 <input class="form-control"
                        th:value="${search} ?: ''"
                        name="search"
@@ -18,11 +18,11 @@
                 <button class="btn btn-outline-success ms-2" type="submit">Поиск</button>
             </form>
 
-            <h2 class="mt-5 text-center" th:if="${posts == null or posts.isEmpty()}">Пусто :(</h2>
+            <h2 class="mt-5 text-center" th:if="${page.content == null or page.content.isEmpty()}">Пусто :(</h2>
             <div class="row row-cols-md-2 row-cols-lg-3 mt-3">
-                <div class="mb-4" th:each="post : ${posts}">
-                    <a th:href="@{/userEntity/profile/{id}(id = ${post.owner.id})}">
-                        <img th:src="@{/api/v1/images/{id}(id = ${post.imageEntity.id})}"
+                <div class="mb-4" th:each="post : ${page.content}">
+                    <a th:href="@{/user/profile/{id}(id = ${post.ownerId})}">
+                        <img th:src="@{/api/v1/images/{id}(id = ${post.image.id})}"
                              class="rounded"
                              style="max-width: 100%;"
                              alt="Фото было удалено">

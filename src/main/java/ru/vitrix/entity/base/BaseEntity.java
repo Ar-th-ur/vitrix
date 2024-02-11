@@ -1,4 +1,4 @@
-package ru.vitrix.entity;
+package ru.vitrix.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

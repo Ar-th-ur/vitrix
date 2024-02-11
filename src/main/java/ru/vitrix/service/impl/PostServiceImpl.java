@@ -2,10 +2,14 @@ package ru.vitrix.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.request.PostRequest;
-import ru.vitrix.request.mapper.PostMapper;
+import ru.vitrix.dto.mapper.PostMapper;
+import ru.vitrix.dto.request.PostRequest;
+import ru.vitrix.dto.response.PageResponse;
+import ru.vitrix.dto.response.entity.PostResponse;
 import ru.vitrix.entity.ImageEntity;
 import ru.vitrix.entity.PostEntity;
 import ru.vitrix.repository.PostRepository;
@@ -19,37 +23,46 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-    private final PostMapper postMapper;
+    private final PostMapper mapper;
 
-    private final PostRepository repository;
+    private final PostRepository postRepository;
     private final UserServiceImpl userService;
 
-    public void save(PostRequest postRequest, String username, MultipartFile file) {
-        var post = postMapper.toEntity(postRequest);
+    public PostResponse save(PostRequest postRequest, String username, MultipartFile file) {
+        var post = mapper.toEntity(postRequest);
         var owner = userService.findByUsername(username);
         try {
             ImageEntity imageEntity = ImageEntity.from(file);
-            post.setImageEntity(imageEntity);
+            post.setImage(imageEntity);
         } catch (IOException e) {
             log.error("Failed to receive bytes from file", e);
         }
 
         post.setOwner(owner);
         owner.getPosts().add(post);
-        repository.save(post);
+        postRepository.save(post);
         userService.update(owner);
 
         log.info("Saving new post {}", postRequest);
+        return mapper.toResponse(post);
     }
 
     public void deleteById(UUID id) {
-        repository.deleteById(id);
+        postRepository.deleteById(id);
     }
 
-    public List<PostEntity> findAll(String title) {
-        if (title == null || title.isBlank()) {
-            return repository.findAll();
-        }
-        return repository.findAllByTitle(title);
+    public PageResponse<PostResponse> getAll(String title, int pageNo, int size) {
+        PageRequest pageRequest = PageRequest.of(pageNo, size);
+        Page<PostEntity> page = postRepository.findAllByTitle(title, pageRequest);
+        List<PostResponse> content = page.getContent().stream().map(mapper::toResponse).toList();
+
+        PageResponse<PostResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setPageSize(size);
+        response.setPageNumber(pageNo);
+        response.setTotalPages(page.getTotalPages());
+        response.setTotalElements(page.getTotalElements());
+        response.setLast(page.isLast());
+        return response;
     }
 }

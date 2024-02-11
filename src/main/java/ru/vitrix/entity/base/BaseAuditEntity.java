@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @MappedSuperclass
 @ToString(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntityAudit extends BaseEntity implements Serializable {
+public abstract class BaseAuditEntity extends BaseEntity implements Serializable {
 
     @CreatedDate
     @DateTimeFormat(pattern = "dd.MMM.yyyy")
