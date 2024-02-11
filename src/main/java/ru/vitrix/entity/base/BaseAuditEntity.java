@@ -1,4 +1,4 @@
-package ru.vitrix.entity;
+package ru.vitrix.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -23,11 +23,11 @@ public abstract class BaseEntityAudit extends BaseEntity implements Serializable
 
     @CreatedDate
     @DateTimeFormat(pattern = "dd.MMM.yyyy")
-    @Column(name = "date_of_created")
-    private LocalDate dateOfCreation;
+    @Column(name = "created_at")
+    private LocalDate createdAt;
 
     @LastModifiedDate
     @DateTimeFormat(pattern = "dd.MMM.yyyy")
-    @Column(name = "date_of_last_modification")
-    private LocalDate dateOfLastModification;
+    @Column(name = "modified_at")
+    private LocalDate modifiedAt;
 }
