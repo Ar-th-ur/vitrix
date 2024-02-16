@@ -6,49 +6,58 @@
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
-        <div class="container col-10 col-md-8">
-            <!-- Information -->
+
+        <!-- Information -->
+        <div class="container col-12 col-md-8">
             <div class="col mt-5">
                 <img th:src="@{/api/v1/images/{id}(id = ${user.avatar.id})}"
                      alt=""
-                     style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; object-position: center;">
-                <b th:text="'&nbsp;&nbsp;&nbsp;' + ${user.username}"></b>
-                <i th:text="${user.getCreatedAt}">текст</i>
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
+                <b class="fs-2 mx-3" th:text="${user.username}"></b>
+                <div class="text-end">
+                    <i th:text="${user.getCreatedAt}">12-02-2024</i>
+                </div>
             </div>
 
-            <!-- Posts -->
+            <div th:if="${user.accountLocked}" class="alert alert-danger mt-4 text-center">
+                <h5>Пользователь заблокирован</h5>
+            </div>
+
             <hr>
 
-            <h2 class="text-center mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
-            <div class="row row-cols-md-3 row-cols-lg-4 mt-5">
-                <div class="mb-4" style="width: 18rem;" th:each="post : ${user.posts}">
-                    <form action="/posts" th:method="DELETE" enctype="multipart/form-data">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                        <input type="hidden" name="postId" th:value="${post.id}">
-                        <!-- Post -->
-                        <div class="card">
-                            <!-- Image -->
-                            <img th:src="@{/api/v1/images/{id}(id = ${post.image.id})}"
-                                 class="card-img-top"
-                                 style="max-width: 100%"
-                                 alt="...">
-                            <div class="card-body">
-                                <div class="card-subtitle">
-                                    <!-- Title -->
-                                    <b th:text="${post.title}">Название</b>
-                                    <!-- Date -->
-                                    <i class="small" th:text="${post.getCreatedAt}">12.02.2023</i>
+            <!-- Posts -->
+            <div th:if="${!user.accountLocked}">
+                <h2 class="text-center mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
+                <div class="row row-cols-md-3 row-cols-lg-4 mt-5">
+                    <div class="mb-4" style="width: 18rem;" th:each="post : ${user.posts}">
+                        <form action="/posts" th:method="DELETE" enctype="multipart/form-data">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <!-- Post -->
+                            <div class="card">
+                                <!-- Image -->
+                                <img th:src="@{/api/v1/images/{id}(id = ${post.image.id})}"
+                                     class="card-img-top"
+                                     style="max-width: 100%"
+                                     alt="...">
+                                <div class="card-body">
+                                    <div class="card-subtitle">
+                                        <!-- Title -->
+                                        <b th:text="${post.title}">Название</b>
+                                        <!-- Date -->
+                                        <i class="small" th:text="${post.getCreatedAt}">12.02.2023</i>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Delete button -->
-                            <button th:if="${isOwner}"
-                                    class="alert alert-danger ms-2 me-2 p-1 mb-2"
-                                    type="submit">
-                                Удалить пост
-                            </button>
-                        </div>
-                    </form>
+                                <!-- Delete button -->
+                                <button th:if="${isOwner}"
+                                        class="alert alert-warning ms-2 me-2 p-1 mb-2"
+                                        type="submit">
+                                    Удалить пост
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

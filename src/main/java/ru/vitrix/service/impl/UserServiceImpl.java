@@ -4,19 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.vitrix.dto.mapper.UserMapper;
 import ru.vitrix.dto.request.UserRequest;
 import ru.vitrix.dto.response.entity.UserResponse;
 import ru.vitrix.entity.ImageEntity;
+import ru.vitrix.entity.Role;
 import ru.vitrix.entity.UserEntity;
-import ru.vitrix.entity.auxiliary.Role;
 import ru.vitrix.exception.NotFoundException;
 import ru.vitrix.repository.UserRepository;
 import ru.vitrix.service.UserService;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.UUID;
 
 @Slf4j
@@ -27,31 +27,34 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public UserResponse save(UserRequest userRequest, MultipartFile file) {
-        var userEntity = mapper.toEntity(userRequest);
+        var user = mapper.toEntity(userRequest);
         var password = userRequest.getPassword();
+
         try {
-            ImageEntity avatar = ImageEntity.from(file);
-            userEntity.setAvatar(avatar);
+            var avatar = ImageEntity.from(file);
+            user.setAvatar(avatar);
         } catch (IOException e) {
             log.error("Failed to receive bytes from file", e);
         }
 
-        userEntity.setPassword(passwordEncoder.encode(password));
-        userEntity.setRoles(Collections.singleton(Role.ROLE_USER));
-        userRepository.saveAndFlush(userEntity);
+        user.setRole(Role.ADMIN);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        log.info("Saving new user {}", user);
 
-        log.info("Saving new user {}", userEntity);
-        return mapper.toResponse(userEntity);
+        return mapper.toResponse(user);
     }
+
 
     public boolean existByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
     public UserResponse update(UserEntity userEntity) {
-        var saved = userRepository.save(userEntity);
-        return mapper.toResponse(saved);
+        var savedUser = userRepository.save(userEntity);
+        return mapper.toResponse(savedUser);
     }
 
     public UserEntity findById(UUID id) {

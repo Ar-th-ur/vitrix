@@ -1,6 +1,7 @@
 package ru.vitrix.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile(Principal principal, Model model) {
+    public String profile(@AuthenticationPrincipal Principal principal, Model model) {
         String username = principal.getName();
         UserResponse userResponse = userService.getByUsername(username);
         boolean isOwner = Objects.equals(userResponse.getUsername(), username);

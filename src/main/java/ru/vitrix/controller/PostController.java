@@ -22,8 +22,8 @@ public class PostController {
     @GetMapping
     public String posts(
             @RequestParam(value = "search", defaultValue = "") String search,
-            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
+            @RequestParam(value = "size", defaultValue = "20") int size,
             Model model
     ) {
         PageResponse<PostResponse> pageResponse = service.getAll(search, pageNo, size);

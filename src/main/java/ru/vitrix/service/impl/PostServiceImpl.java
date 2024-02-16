@@ -56,13 +56,13 @@ public class PostServiceImpl implements PostService {
         Page<PostEntity> page = postRepository.findAllByTitle(title, pageRequest);
         List<PostResponse> content = page.getContent().stream().map(mapper::toResponse).toList();
 
-        PageResponse<PostResponse> response = new PageResponse<>();
-        response.setContent(content);
-        response.setPageSize(size);
-        response.setPageNumber(pageNo);
-        response.setTotalPages(page.getTotalPages());
-        response.setTotalElements(page.getTotalElements());
-        response.setLast(page.isLast());
-        return response;
+        return PageResponse.<PostResponse>builder()
+                .last(page.isLast())
+                .content(content)
+                .pageSize(size)
+                .pageNumber(pageNo)
+                .totalPages(page.getTotalPages())
+                .totalElements(page.getTotalElements())
+                .build();
     }
 }

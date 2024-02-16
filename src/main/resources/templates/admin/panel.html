@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+    <head>
+        <title>Admin Panel</title>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+    </head>
+    <body>
+        <nav th:replace="~{fragments :: header}"></nav>
+        <div class="container text-center">
+            <h3>Пользователи</h3>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Роль</th>
+                        <th>Заблокирован</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td>
+                            <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}">Username</a>
+                        </td>
+                        <td th:text="${user.role}">USER</td>
+                        <td th:text="${user.accountLocked ? 'Да' : 'Нет'}">Yes | No</td>
+                        <td>
+                            <form th:if="${user.accountLocked}"
+                                  th:action="@{/admin/unban-user/{id}(id = ${user.id})}"
+                                  th:method="PATCH">
+                                <input type="submit" value="Разблокировать">
+                            </form>
+                            <form th:if="${user.accountNonLocked}"
+                                  th:action="@{/admin/ban-user/{id}(id = ${user.id})}"
+                                  th:method="PATCH">
+                                <input type="submit" value="Заблокировать">
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

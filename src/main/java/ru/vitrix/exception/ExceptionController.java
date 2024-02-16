@@ -19,8 +19,8 @@ public class ExceptionController implements ErrorController {
             case 404 -> "Такой страницы нет.";
             case 403 -> "У вас нет прав доступа к этой странице";
             default -> {
-                Exception exception = (Exception) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);
-                log.error("Exception: ", exception);
+//                Exception exception = (Exception) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);
+//                log.error("Exception: ", exception);
                 yield "Что то пошло нет. Мы уже исправляем";
             }
         };

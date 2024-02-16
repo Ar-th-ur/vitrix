@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
     <head>
-        <title>Такой страницы нет</title>
+        <title th:text="${errorMessage}"></title>
         <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
     </head>
     <body>
