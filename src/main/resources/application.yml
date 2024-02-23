@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   jpa:
@@ -7,10 +7,10 @@ spring:
     show-sql: true
     open-in-view: false
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/vitrix
-    username: root
-    password: 11122006Wh
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/vitrix
+    username: postgres
+    password: 11122006Pl
+    driver-class-name: org.postgresql.Driver
   mvc:
     hiddenmethod.filter.enabled: true
   servlet:

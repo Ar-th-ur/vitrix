@@ -29,7 +29,7 @@ public class ImageEntity extends BaseEntity {
     @Column(name = "contentType")
     private String contentType;
 
-    @Column(columnDefinition = "longblob")
+    @Column(columnDefinition = "bytea")
     private byte[] bytes;
 
     public static ImageEntity from(MultipartFile file) throws IOException {

@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    hibernate.ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://db:5432/vitrix
+    username: postgres
+    password: 123
