@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
             log.error("Failed to receive bytes from file", e);
         }
 
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         log.info("Saving new user {}", user);

@@ -14,13 +14,13 @@ public class ExceptionController implements ErrorController {
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
-        Integer statusCode = (Integer) request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE);
+        int statusCode = (int) request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE);
         String errorMessage = switch (statusCode) {
             case 404 -> "Такой страницы нет.";
             case 403 -> "У вас нет прав доступа к этой странице";
             default -> {
-//                Exception exception = (Exception) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);
-//                log.error("Exception: ", exception);
+                Exception exception = (Exception) request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE);
+                log.error("Exception: ", exception);
                 yield "Что то пошло нет. Мы уже исправляем";
             }
         };

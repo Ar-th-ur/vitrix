@@ -7,7 +7,7 @@
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
         <div class="container col-10 col-md-8 col-lg-4 mt-3 text-center">
-            <form action="/post" method="post" th:object="${post}" enctype="multipart/form-data">
+            <form action="/posts" method="post" th:object="${post}" enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                 <h1>Ваш пост</h1>
                 <!-- Image -->
