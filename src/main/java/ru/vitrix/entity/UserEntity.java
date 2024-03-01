@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.vitrix.entity.base.BaseAuditEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,25 +20,25 @@ import java.util.List;
 @Table(name = "users")
 public class UserEntity extends BaseAuditEntity implements UserDetails {
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "is_account_locked")
-    private boolean isAccountLocked = false;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "owner")
-    private List<PostEntity> posts = new ArrayList<>();
-
-    @JoinColumn(name = "image_id")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ImageEntity avatar;
+    private boolean isAccountLocked;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @JoinColumn(name = "image_id")
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private ImageEntity avatar;
+
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<PostEntity> posts = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

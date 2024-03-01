@@ -8,5 +8,5 @@ import java.util.UUID;
 @Getter
 @Setter
 public abstract class BaseResponse {
-    private UUID id;
+    private Long id;
 }

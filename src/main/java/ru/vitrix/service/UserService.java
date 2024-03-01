@@ -5,8 +5,6 @@ import ru.vitrix.dto.request.UserRequest;
 import ru.vitrix.dto.response.entity.UserResponse;
 import ru.vitrix.entity.UserEntity;
 
-import java.util.UUID;
-
 public interface UserService {
     UserResponse save(UserRequest userRequest, MultipartFile file);
 
@@ -14,9 +12,9 @@ public interface UserService {
 
     UserResponse update(UserEntity userEntity);
 
-    UserEntity findById(UUID id);
+    UserEntity findById(Long id);
 
-    UserResponse getById(UUID id);
+    UserResponse getById(Long id);
 
     UserEntity findByUsername(String username);
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.vitrix.dto.mapper.PostMapper;
 import ru.vitrix.dto.request.PostRequest;
@@ -17,7 +18,6 @@ import ru.vitrix.service.PostService;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -28,6 +28,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserServiceImpl userService;
 
+    @Transactional
     public PostResponse save(PostRequest postRequest, String username, MultipartFile file) {
         var post = mapper.toEntity(postRequest);
         var owner = userService.findByUsername(username);
@@ -47,7 +48,7 @@ public class PostServiceImpl implements PostService {
         return mapper.toResponse(post);
     }
 
-    public void deleteById(UUID id) {
+    public void deleteById(Long id) {
         postRepository.deleteById(id);
     }
 

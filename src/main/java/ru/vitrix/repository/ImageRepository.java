@@ -5,5 +5,5 @@ import ru.vitrix.entity.ImageEntity;
 
 import java.util.UUID;
 
-public interface ImageRepository extends JpaRepository<ImageEntity, UUID> {
+public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
 }

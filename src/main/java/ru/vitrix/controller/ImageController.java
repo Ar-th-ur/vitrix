@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.vitrix.repository.ImageRepository;
 
 import java.io.ByteArrayInputStream;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/images")
@@ -20,7 +19,7 @@ public class ImageController {
     private final ImageRepository imageRepository;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getImage(@PathVariable UUID id) {
+    public ResponseEntity<?> getImage(@PathVariable Long id) {
         var image = imageRepository.findById(id).orElse(null);
         if (image == null) {
             return ResponseEntity.ok(null);

@@ -11,7 +11,6 @@ import ru.vitrix.dto.response.entity.PostResponse;
 import ru.vitrix.service.impl.PostServiceImpl;
 
 import java.security.Principal;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/posts")
@@ -49,7 +48,7 @@ public class PostController {
     }
 
     @DeleteMapping
-    public String delete(@RequestParam("postId") UUID id) {
+    public String delete(@RequestParam("postId") Long id) {
         service.deleteById(id);
         return "redirect:/user/profile";
     }

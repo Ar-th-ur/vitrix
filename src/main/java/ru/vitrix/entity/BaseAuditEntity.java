@@ -1,4 +1,4 @@
-package ru.vitrix.entity.base;
+package ru.vitrix.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,12 +22,12 @@ import java.time.LocalDate;
 public abstract class BaseAuditEntity extends BaseEntity implements Serializable {
 
     @CreatedDate
-    @DateTimeFormat(pattern = "dd.MMM.yyyy")
+    @DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @DateTimeFormat(pattern = "dd.MMM.yyyy")
+    @DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @Column(name = "modified_at")
-    private LocalDate modifiedAt;
+    private LocalDateTime modifiedAt;
 }

@@ -1,12 +1,9 @@
 package ru.vitrix.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.entity.base.BaseEntity;
 
 import java.io.IOException;
 
@@ -18,18 +15,18 @@ import java.io.IOException;
 @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"bytes"})
 @Table(name = "images")
-public class ImageEntity extends BaseEntity {
+public class ImageEntity extends BaseAuditEntity {
 
-    @Column(name = "fileName")
+    @Column(name = "file_name")
     private String fileName;
 
-    @Column(name = "size")
+    @Column(name = "file_size")
     private Long size;
 
     @Column(name = "contentType")
     private String contentType;
 
-    @Column(columnDefinition = "bytea")
+    @Column(name = "data")
     private byte[] bytes;
 
     public static ImageEntity from(MultipartFile file) throws IOException {

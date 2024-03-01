@@ -3,15 +3,24 @@ server:
 
 spring:
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: validate
     show-sql: true
     open-in-view: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/vitrix
     username: postgres
     password: 11122006Pl
-    driver-class-name: org.postgresql.Driver
   mvc:
     hiddenmethod.filter.enabled: true
   servlet:
     multipart.max-file-size: 5MB
+  sql:
+    init:
+      mode: always
+  flyway:
+    user: postgres
+    password: 11122006Pl
+

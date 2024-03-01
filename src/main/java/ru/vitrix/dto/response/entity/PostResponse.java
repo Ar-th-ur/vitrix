@@ -10,6 +10,6 @@ import java.util.UUID;
 @Setter
 public class PostResponse extends BaseAuditResponse {
     private String title;
-    private UUID ownerId;
+    private Long ownerId;
     private ImageResponse image;
 }

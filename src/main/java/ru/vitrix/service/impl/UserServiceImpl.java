@@ -2,6 +2,7 @@ package ru.vitrix.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,6 @@ import ru.vitrix.repository.UserRepository;
 import ru.vitrix.service.UserService;
 
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         return mapper.toResponse(savedUser);
     }
 
-    public UserEntity findById(UUID id) {
+    public UserEntity findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(
                         () -> new NotFoundException("User with id \"%s\" not found".formatted(id))
@@ -65,14 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getById(UUID id) {
+    public UserResponse getById(Long id) {
         return mapper.toResponse(findById(id));
     }
 
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(
-                        () -> new NotFoundException("User with username \"%s\" not found".formatted(username))
+                        () -> new UsernameNotFoundException("User with username \"%s\" not found".formatted(username))
                 );
     }
 

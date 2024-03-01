@@ -2,7 +2,6 @@ package ru.vitrix.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.vitrix.entity.base.BaseAuditEntity;
 
 @Entity
 @Getter
@@ -17,7 +16,7 @@ public class PostEntity extends BaseAuditEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private ImageEntity image;
 

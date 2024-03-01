@@ -12,7 +12,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class AdminController {
     }
 
     @PatchMapping("/ban-user/{id}")
-    public String banUser(@PathVariable UUID id) {
+    public String banUser(@PathVariable Long id) {
         var user = userRepository.findById(id).orElseThrow();
         user.setAccountLocked(true);
         userRepository.save(user);
@@ -43,7 +42,7 @@ public class AdminController {
     }
 
     @PatchMapping("/unban-user/{id}")
-    public String unbanUser(@PathVariable UUID id) {
+    public String unbanUser(@PathVariable Long id) {
         var user = userRepository.findById(id).orElseThrow();
         user.setAccountLocked(false);
         userRepository.save(user);
