@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.dto.request.UserRequest;
+import ru.vitrix.dto.UserDto;
 import ru.vitrix.service.impl.UserServiceImpl;
 
 @Controller
@@ -27,7 +27,7 @@ public class AuthenticationController {
 
     @GetMapping("/registration")
     public String registration(
-            @ModelAttribute("user") UserRequest userRequest,
+            @ModelAttribute("user") UserDto userDto,
             @RequestParam(value = "error", defaultValue = "false") boolean registrationError,
             Model model
     ) {
@@ -37,14 +37,14 @@ public class AuthenticationController {
 
     @PostMapping("/registration")
     public String register(
-            @ModelAttribute("user") UserRequest userRequest,
-            @RequestParam("file") MultipartFile file
+            @ModelAttribute("user") UserDto userDto,
+            @RequestParam(value = "file") MultipartFile file
     ) {
-        String username = userRequest.getUsername();
+        String username = userDto.getUsername();
         if (userService.existByUsername(username)) {
             return "redirect:/auth/registration?error=true";
         }
-        userService.save(userRequest, file);
+        userService.save(userDto, file);
         return "redirect:/auth/login";
     }
 }

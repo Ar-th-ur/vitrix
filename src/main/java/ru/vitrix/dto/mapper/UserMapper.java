@@ -2,13 +2,14 @@ package ru.vitrix.dto.mapper;
 
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
-import ru.vitrix.dto.request.UserRequest;
-import ru.vitrix.dto.response.entity.UserResponse;
+import org.mapstruct.Mapping;
+import ru.vitrix.dto.UserDto;
 import ru.vitrix.entity.UserEntity;
 
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface UserMapper {
-    UserEntity toEntity(UserRequest userRequest);
+    UserEntity toEntity(UserDto userDto);
 
-    UserResponse toResponse(UserEntity userEntity);
+    @Mapping(target = "avatarId", source = "avatar.id")
+    UserDto toDto(UserEntity userEntity);
 }

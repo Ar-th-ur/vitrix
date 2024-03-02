@@ -4,7 +4,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 

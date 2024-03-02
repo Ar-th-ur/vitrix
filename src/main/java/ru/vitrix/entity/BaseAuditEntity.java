@@ -22,12 +22,12 @@ import java.time.LocalDateTime;
 public abstract class BaseAuditEntity extends BaseEntity implements Serializable {
 
     @CreatedDate
-    @DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss")
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 }

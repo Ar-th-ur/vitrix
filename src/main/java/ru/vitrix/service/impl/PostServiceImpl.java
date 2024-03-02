@@ -7,10 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ru.vitrix.dto.PageResponse;
+import ru.vitrix.dto.PostDto;
 import ru.vitrix.dto.mapper.PostMapper;
-import ru.vitrix.dto.request.PostRequest;
-import ru.vitrix.dto.response.PageResponse;
-import ru.vitrix.dto.response.entity.PostResponse;
 import ru.vitrix.entity.ImageEntity;
 import ru.vitrix.entity.PostEntity;
 import ru.vitrix.repository.PostRepository;
@@ -29,8 +28,8 @@ public class PostServiceImpl implements PostService {
     private final UserServiceImpl userService;
 
     @Transactional
-    public PostResponse save(PostRequest postRequest, String username, MultipartFile file) {
-        var post = mapper.toEntity(postRequest);
+    public PostDto save(PostDto postDto, String username, MultipartFile file) {
+        var post = mapper.toEntity(postDto);
         var owner = userService.findByUsername(username);
         try {
             ImageEntity imageEntity = ImageEntity.from(file);
@@ -44,20 +43,20 @@ public class PostServiceImpl implements PostService {
         postRepository.save(post);
         userService.update(owner);
 
-        log.info("Saving new post {}", postRequest);
-        return mapper.toResponse(post);
+        log.info("Saving new post {}", postDto);
+        return mapper.toDto(post);
     }
 
     public void deleteById(Long id) {
         postRepository.deleteById(id);
     }
 
-    public PageResponse<PostResponse> getAll(String title, int pageNo, int size) {
+    public PageResponse<PostDto> getAll(String title, int pageNo, int size) {
         PageRequest pageRequest = PageRequest.of(pageNo, size);
         Page<PostEntity> page = postRepository.findAllByTitle(title, pageRequest);
-        List<PostResponse> content = page.getContent().stream().map(mapper::toResponse).toList();
+        List<PostDto> content = page.getContent().stream().map(mapper::toDto).toList();
 
-        return PageResponse.<PostResponse>builder()
+        return PageResponse.<PostDto>builder()
                 .last(page.isLast())
                 .content(content)
                 .pageSize(size)

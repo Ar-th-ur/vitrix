@@ -7,9 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ru.vitrix.dto.UserDto;
 import ru.vitrix.dto.mapper.UserMapper;
-import ru.vitrix.dto.request.UserRequest;
-import ru.vitrix.dto.response.entity.UserResponse;
 import ru.vitrix.entity.ImageEntity;
 import ru.vitrix.entity.Role;
 import ru.vitrix.entity.UserEntity;
@@ -27,24 +26,26 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Override
     @Transactional
-    public UserResponse save(UserRequest userRequest, MultipartFile file) {
-        var user = mapper.toEntity(userRequest);
-        var password = userRequest.getPassword();
+    public UserDto save(UserDto userDto, MultipartFile file) {
+        var user = mapper.toEntity(userDto);
+        var password = userDto.getPassword();
 
-        try {
-            var avatar = ImageEntity.from(file);
-            user.setAvatar(avatar);
-        } catch (IOException e) {
-            log.error("Failed to receive bytes from file", e);
+        if (!file.isEmpty()) {
+            try {
+                var avatar = ImageEntity.from(file);
+                user.setAvatar(avatar);
+            } catch (IOException e) {
+                log.error("Failed to receive bytes from file", e);
+            }
         }
 
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         log.info("Saving new user {}", user);
-
-        return mapper.toResponse(user);
+        return mapper.toDto(user);
     }
 
 
@@ -52,9 +53,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public UserResponse update(UserEntity userEntity) {
+    public UserDto update(UserEntity userEntity) {
         var savedUser = userRepository.save(userEntity);
-        return mapper.toResponse(savedUser);
+        return mapper.toDto(savedUser);
     }
 
     public UserEntity findById(Long id) {
@@ -65,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getById(Long id) {
-        return mapper.toResponse(findById(id));
+    public UserDto getById(Long id) {
+        return mapper.toDto(findById(id));
     }
 
     public UserEntity findByUsername(String username) {
@@ -77,7 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getByUsername(String username) {
-        return mapper.toResponse(findByUsername(username));
+    public UserDto getByUsername(String username) {
+        return mapper.toDto(findByUsername(username));
     }
+
 }

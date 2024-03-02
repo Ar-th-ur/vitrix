@@ -10,23 +10,28 @@
         <!-- Information -->
         <div class="container col-12 col-md-8">
             <div class="col mt-5">
-                <img th:src="@{/api/v1/images/{id}(id = ${user.avatar.id})}"
-                     alt=""
+                <img th:if="${user.avatarId == null}"
+                     alt="img"
+                     src="/images/default_user_photo.png"
                      style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
-                <b class="fs-2 mx-3" th:text="${user.username}"></b>
+                <img th:if="${user.avatarId != null}"
+                     th:src="@{/api/v1/images/{id}(id = ${user.avatarId})}"
+                     alt="img"
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
+                <b class="fs-2 mx-3" th:text="${user.username}">username</b>
                 <div class="text-end">
-                    <i th:text="${user.getCreatedAt}">12-02-2024</i>
+                    <i th:text="${#dates.format(user.getCreatedAt, 'yyyy.MM.dd')}">12-02-2024</i>
                 </div>
             </div>
 
-            <div th:if="${user.accountLocked}" class="alert alert-danger mt-4 text-center">
+            <div th:if="${user.isAccountLocked}" class="alert alert-danger mt-4 text-center">
                 <h5>Пользователь заблокирован</h5>
             </div>
 
             <hr>
 
             <!-- Posts -->
-            <div th:if="${!user.accountLocked}">
+            <div th:if="${!user.isAccountLocked}">
                 <h2 class="text-center mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
                 <div class="row row-cols-md-3 row-cols-lg-4 mt-5">
                     <div class="mb-4" style="width: 18rem;" th:each="post : ${user.posts}">
@@ -36,7 +41,7 @@
                             <!-- Post -->
                             <div class="card">
                                 <!-- Image -->
-                                <img th:src="@{/api/v1/images/{id}(id = ${post.image.id})}"
+                                <img th:src="@{/api/v1/images/{id}(id = ${post.imageId})}"
                                      class="card-img-top"
                                      style="max-width: 100%"
                                      alt="...">
@@ -45,7 +50,7 @@
                                         <!-- Title -->
                                         <b th:text="${post.title}">Название</b>
                                         <!-- Date -->
-                                        <i class="small" th:text="${post.getCreatedAt}">12.02.2023</i>
+                                        <i class="small" th:text="${post.getCreatedAt()}"></i>
                                     </div>
                                 </div>
 

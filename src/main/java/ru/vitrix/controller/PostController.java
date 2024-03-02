@@ -5,9 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.dto.request.PostRequest;
-import ru.vitrix.dto.response.PageResponse;
-import ru.vitrix.dto.response.entity.PostResponse;
+import ru.vitrix.dto.PageResponse;
+import ru.vitrix.dto.PostDto;
 import ru.vitrix.service.impl.PostServiceImpl;
 
 import java.security.Principal;
@@ -25,25 +24,25 @@ public class PostController {
             @RequestParam(value = "size", defaultValue = "20") int size,
             Model model
     ) {
-        PageResponse<PostResponse> pageResponse = service.getAll(search, pageNo, size);
+        PageResponse<PostDto> pageResponse = service.getAll(search, pageNo, size);
         model.addAttribute("search", search);
         model.addAttribute("page", pageResponse);
         return "index";
     }
 
     @GetMapping("/create")
-    public String showCreatePostForm(@ModelAttribute("post") PostRequest postRequest) {
+    public String showCreatePostForm(@ModelAttribute("post") PostDto postDto) {
         return "posts/create";
     }
 
     @PostMapping
     public String createPost(
-            @ModelAttribute("post") PostRequest postRequest,
+            @ModelAttribute("post") PostDto postDto,
             @RequestParam("file") MultipartFile file,
             Principal principal
     ) {
         String email = principal.getName();
-        service.save(postRequest, email, file);
+        service.save(postDto, email, file);
         return "redirect:/posts";
     }
 

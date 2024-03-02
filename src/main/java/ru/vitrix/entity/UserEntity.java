@@ -34,10 +34,10 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
     private Role role;
 
     @JoinColumn(name = "image_id")
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private ImageEntity avatar;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "owner")
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "owner")
     private List<PostEntity> posts = new ArrayList<>();
 
     @Override

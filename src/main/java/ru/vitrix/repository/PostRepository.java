@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.vitrix.entity.PostEntity;
 
-import java.util.UUID;
-
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
