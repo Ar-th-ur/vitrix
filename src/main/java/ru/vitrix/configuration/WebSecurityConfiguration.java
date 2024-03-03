@@ -1,7 +1,6 @@
 package ru.vitrix.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +22,10 @@ import static ru.vitrix.entity.Role.ADMIN;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
+    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*", "/posts", "/api/v1/images/**", "/auth/registration"};
+    private static final String[] ANONYMOUS_PATHS = {"/auth/registration"};
+    private static final String[] ADMIN_PATHS = {"/admin/*"};
+
     private final UserRepository userRepository;
 
     @Bean
@@ -31,16 +33,9 @@ public class WebSecurityConfiguration {
         return http
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(
-                                "/admin/**"
-                        ).hasRole(ADMIN.name())
-                        .requestMatchers(
-                                "/auth/registration"
-                        ).anonymous()
-                        .requestMatchers(
-                                "/posts",
-                                "/api/v1/images/**"
-                        ).permitAll()
+                        .requestMatchers(ADMIN_PATHS).hasRole(ADMIN.name())
+                        .requestMatchers(ANONYMOUS_PATHS).anonymous()
+                        .requestMatchers(PERMIT_ALL_PATHS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -55,11 +50,6 @@ public class WebSecurityConfiguration {
                         .permitAll()
                 )
                 .build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean

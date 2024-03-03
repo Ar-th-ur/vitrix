@@ -20,7 +20,7 @@
                      style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
                 <b class="fs-2 mx-3" th:text="${user.username}">username</b>
                 <div class="text-end">
-                    <i th:text="${#dates.format(user.getCreatedAt, 'yyyy.MM.dd')}">12-02-2024</i>
+                    <i th:text="${#temporals.format(user.getCreatedAt, 'dd.MM.yyyy')}">12.02.2024</i>
                 </div>
             </div>
 
@@ -50,7 +50,10 @@
                                         <!-- Title -->
                                         <b th:text="${post.title}">Название</b>
                                         <!-- Date -->
-                                        <i class="small" th:text="${post.getCreatedAt()}"></i>
+                                        <i class="small" th:text="${post.inDay} ?
+                                        ${#temporals.format(post.getCreatedAt(), 'HH:mm')}
+                                        : ${#temporals.format(post.getCreatedAt(), 'dd.MM.yyyy')}
+                                        "></i>
                                     </div>
                                 </div>
 

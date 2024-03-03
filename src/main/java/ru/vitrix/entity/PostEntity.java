@@ -16,7 +16,7 @@ public class PostEntity extends BaseAuditEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private ImageEntity image;
 
