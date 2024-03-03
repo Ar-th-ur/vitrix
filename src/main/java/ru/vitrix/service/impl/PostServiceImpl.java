@@ -53,7 +53,12 @@ public class PostServiceImpl implements PostService {
 
     public PageResponse<PostDto> getAll(String title, int pageNo, int size) {
         PageRequest pageRequest = PageRequest.of(pageNo, size);
-        Page<PostEntity> page = postRepository.findAllByTitle(title, pageRequest);
+        Page<PostEntity> page;
+        if (title.isBlank()) {
+            page = postRepository.findAll(pageRequest);
+        } else {
+            page = postRepository.findAllByTitle(title, pageRequest);
+        }
         List<PostDto> content = page.getContent().stream().map(mapper::toDto).toList();
 
         return PageResponse.<PostDto>builder()

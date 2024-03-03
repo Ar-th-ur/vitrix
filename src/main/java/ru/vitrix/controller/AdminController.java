@@ -29,6 +29,7 @@ public class AdminController {
         var pageRequest = PageRequest.of(pageNumber, pageSize);
         List<UserEntity> users = new ArrayList<>(userRepository.findAll(pageRequest).getContent());
         users.removeIf(user -> Objects.equals(user.getUsername(), principal.getName()));
+
         model.addAttribute("users", users);
         return "admin/panel";
     }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+<html lang="ru" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" data-bs-theme="dark">
     <head>
         <title>Профиль</title>
         <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
@@ -8,22 +8,24 @@
         <nav th:replace="~{fragments :: header}"></nav>
 
         <!-- Information -->
-        <div class="container col-12 col-md-8">
-            <div class="col mt-5">
+        <div class="container col-11 col-md-10 text-center">
+            <div class="col mt-5 text-start">
+
+                <!-- Default photo -->
                 <img th:if="${user.avatarId == null}"
                      alt="img"
                      src="/images/default_user_photo.png"
                      style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
+
+                <!-- Photo -->
                 <img th:if="${user.avatarId != null}"
                      th:src="@{/api/v1/images/{id}(id = ${user.avatarId})}"
                      alt="img"
                      style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
                 <b class="fs-2 mx-3" th:text="${user.username}">username</b>
-                <div class="text-end">
-                    <i th:text="${#temporals.format(user.getCreatedAt, 'dd.MM.yyyy')}">12.02.2024</i>
-                </div>
             </div>
 
+            <!-- State -->
             <div th:if="${user.isAccountLocked}" class="alert alert-danger mt-4 text-center">
                 <h5>Пользователь заблокирован</h5>
             </div>
@@ -32,33 +34,46 @@
 
             <!-- Posts -->
             <div th:if="${!user.isAccountLocked}">
-                <h2 class="text-center mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
-                <div class="row row-cols-md-3 row-cols-lg-4 mt-5">
-                    <div class="mb-4" style="width: 18rem;" th:each="post : ${user.posts}">
-                        <form action="/posts" th:method="DELETE" enctype="multipart/form-data">
+                <h2 class="mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
+                <div class="row row-cols-md-2 row-cols-lg-3 mt-5">
+                    <div class="mb-4" th:each="post : ${user.posts}">
+                        <form action="/posts" th:method="DELETE">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <input type="hidden" name="postId" th:value="${post.id}">
+
                             <!-- Post -->
                             <div class="card">
+
                                 <!-- Image -->
                                 <img th:src="@{/api/v1/images/{id}(id = ${post.imageId})}"
                                      class="card-img-top"
                                      style="max-width: 100%"
                                      alt="...">
                                 <div class="card-body">
+
+                                    <!-- Subtitle -->
                                     <div class="card-subtitle">
+
                                         <!-- Title -->
                                         <b th:text="${post.title}">Название</b>
+
                                         <!-- Date -->
                                         <i class="small" th:text="${post.inDay} ?
-                                        ${#temporals.format(post.getCreatedAt(), 'HH:mm')}
-                                        : ${#temporals.format(post.getCreatedAt(), 'dd.MM.yyyy')}
-                                        "></i>
+                                        ${#temporals.format(post.createdAt, 'HH:mm')}
+                                        : ${#temporals.format(post.createdAt, 'dd.MM.yyyy')}">
+                                        </i>
                                     </div>
                                 </div>
 
                                 <!-- Delete button -->
                                 <button th:if="${isOwner}"
+                                        class="alert alert-warning ms-2 me-2 p-1 mb-2"
+                                        type="submit">
+                                    Удалить пост
+                                </button>
+
+                                <!-- For admin -->
+                                <button th:if="${!isOwner}" sec:authorize="hasRole('ADMIN')"
                                         class="alert alert-warning ms-2 me-2 p-1 mb-2"
                                         type="submit">
                                     Удалить пост

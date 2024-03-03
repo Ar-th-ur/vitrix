@@ -22,7 +22,7 @@ import static ru.vitrix.entity.Role.ADMIN;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
-    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*", "/posts", "/api/v1/images/**", "/auth/registration"};
+    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*", "/posts", "/user/profile/{id}", "/api/v1/images/*", "/auth/registration"};
     private static final String[] ANONYMOUS_PATHS = {"/auth/registration"};
     private static final String[] ADMIN_PATHS = {"/admin/*"};
 
@@ -46,7 +46,7 @@ public class WebSecurityConfiguration {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/posts")
+                        .logoutSuccessUrl("/auth/login")
                         .permitAll()
                 )
                 .build();

@@ -21,7 +21,10 @@ public class UserController {
     @GetMapping("/profile/{id}")
     public String profile(@PathVariable Long id, Principal principal, Model model) {
         UserDto userDto = userService.getById(id);
-        boolean isOwner = Objects.equals(userDto.getUsername(), principal.getName());
+        boolean isOwner = false;
+        if (principal != null) {
+            isOwner = Objects.equals(userDto.getUsername(), principal.getName());
+        }
 
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("user", userDto);

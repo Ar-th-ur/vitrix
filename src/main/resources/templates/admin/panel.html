@@ -13,17 +13,17 @@
                     <tr>
                         <th>Имя</th>
                         <th>Роль</th>
-                        <th>Заблокирован</th>
+                        <th>Состояние</th>
                         <th>Действие</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="user : ${users}">
                         <td>
-                            <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}">Username</a>
+                            <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}"></a>
                         </td>
                         <td th:text="${user.role}">USER</td>
-                        <td th:text="${user.accountLocked ? 'Да' : 'Нет'}">Yes | No</td>
+                        <td th:text="${user.accountLocked ? 'Заблокирован' : 'Не заблокирован'}"></td>
                         <td>
                             <form th:if="${user.accountLocked}"
                                   th:action="@{/admin/unban-user/{id}(id = ${user.id})}"

@@ -19,6 +19,5 @@ public class PostDto {
     private Long imageId;
     private Long ownerId;
     private LocalDateTime createdAt;
-
     private boolean inDay;
 }
