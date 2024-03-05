@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
-@Controller
 @Slf4j
+@Controller
 public class ExceptionController implements ErrorController {
 
     @RequestMapping("/error")

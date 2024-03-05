@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="ru" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" data-bs-theme="dark">
+<html lang="ru" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <head>
         <title>Профиль</title>
         <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
@@ -35,7 +36,7 @@
             <!-- Posts -->
             <div th:if="${!user.isAccountLocked}">
                 <h2 class="mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
-                <div class="row row-cols-md-2 row-cols-lg-3 mt-5">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 mt-5">
                     <div class="mb-4" th:each="post : ${user.posts}">
                         <form action="/posts" th:method="DELETE">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">

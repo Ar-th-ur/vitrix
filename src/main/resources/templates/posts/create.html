@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title>Создание пост</title>
+        <title>Создание поста</title>
         <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
     </head>
     <body>
@@ -10,8 +10,20 @@
             <form action="/posts" method="post" th:object="${post}" enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                 <h1>Ваш пост</h1>
+
+                <!-- Error message -->
+                <div th:if="${error}">
+                    <div class="alert alert-danger mt-4">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
+                </div>
+
                 <!-- Image -->
-                <input class="mt-5" type="file" name="file" accept="image/jpeg, image/png" required>
+                <input class="mt-5"
+                       type="file"
+                       name="file"
+                       accept="image/jpeg, image/png"
+                       required>
 
                 <!-- Title -->
                 <input th:field="*{title}"

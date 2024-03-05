@@ -10,5 +10,4 @@ public interface PostService {
     void deleteById(Long id);
 
     PageResponse<PostDto> getAll(String title, int pageNumber, int size);
-
 }

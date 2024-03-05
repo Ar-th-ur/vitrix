@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Getter
 @Setter
@@ -34,10 +36,10 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
     private Role role;
 
     @JoinColumn(name = "image_id")
-    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY)
     private ImageEntity avatar;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "owner")
+    @OneToMany(cascade = ALL, fetch = FetchType.EAGER, mappedBy = "owner")
     private List<PostEntity> posts = new ArrayList<>();
 
     @Override

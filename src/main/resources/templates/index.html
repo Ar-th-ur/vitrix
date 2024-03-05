@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org" data-bs-theme="dark">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
     <head>
         <title>VITRIX</title>
         <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
@@ -23,7 +23,7 @@
             </form>
 
             <h2 class="mt-5 text-center" th:if="${page.content == null or page.content.isEmpty()}">Пусто :(</h2>
-            <div class="row row-cols-md-2 row-cols-lg-3 mt-5">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 mt-5">
                 <div class="mb-3" th:each="post : ${page.content}">
                     <a th:href="@{/user/profile/{id}(id = ${post.ownerId})}">
                         <img th:src="@{/api/v1/images/{id}(id = ${post.imageId})}"

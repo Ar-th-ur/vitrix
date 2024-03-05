@@ -27,9 +27,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserServiceImpl userService;
 
-    @Transactional
     public PostDto save(PostDto postDto, String username, MultipartFile file) {
-        var post = mapper.toEntity(postDto);
+        PostEntity post = mapper.toEntity(postDto);
         var owner = userService.findByUsername(username);
         try {
             ImageEntity imageEntity = ImageEntity.from(file);
@@ -39,8 +38,8 @@ public class PostServiceImpl implements PostService {
         }
 
         post.setOwner(owner);
-        owner.getPosts().add(post);
         postRepository.save(post);
+        owner.getPosts().add(post);
         userService.update(owner);
 
         log.info("Saving new post {}", postDto);

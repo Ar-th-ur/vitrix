@@ -3,6 +3,8 @@ package ru.vitrix.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Getter
 @Setter
@@ -16,11 +18,11 @@ public class PostEntity extends BaseAuditEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {REMOVE, PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private ImageEntity image;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserEntity owner;
 }
