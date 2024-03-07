@@ -22,4 +22,13 @@
 docker pull -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=1234 vitrix
 ```
 
+## Stack
+1. Spring (Boot, Web, Security, Jpa)
+2. Hibernate
+3. Thymeleaf
+4. Mapstruct
+5. Flyway
+6. Postgres
+
+
 
