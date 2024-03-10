@@ -5,8 +5,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.vitrix.dto.UserDto;
 import ru.vitrix.entity.UserEntity;
 import ru.vitrix.repository.UserRepository;
+import ru.vitrix.service.AdminService;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -17,36 +19,28 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
-    private final UserRepository userRepository;
+    private final AdminService adminService;
 
     @GetMapping("/panel")
     public String getAllUsers(
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-            Principal principal,
             Model model
     ) {
-        var pageRequest = PageRequest.of(pageNumber, pageSize);
-        List<UserEntity> users = new ArrayList<>(userRepository.findAll(pageRequest).getContent());
-        users.removeIf(user -> Objects.equals(user.getUsername(), principal.getName()));
-
+        var users = adminService.findAll(pageNumber, pageSize);
         model.addAttribute("users", users);
         return "admin/panel";
     }
 
     @PatchMapping("/ban-user/{id}")
     public String banUser(@PathVariable Long id) {
-        var user = userRepository.findById(id).orElseThrow();
-        user.setAccountLocked(true);
-        userRepository.save(user);
+        adminService.banUserById(id);
         return "redirect:/admin/panel";
     }
 
     @PatchMapping("/unban-user/{id}")
     public String unbanUser(@PathVariable Long id) {
-        var user = userRepository.findById(id).orElseThrow();
-        user.setAccountLocked(false);
-        userRepository.save(user);
+        adminService.unbanUserById(id);
         return "redirect:/admin/panel";
     }
 }

@@ -14,7 +14,7 @@ spring:
   mvc:
     hiddenmethod.filter.enabled: true
   servlet:
-    multipart.max-file-size: 10MB
+    multipart.max-file-size: 5MB
   sql:
     init:
       mode: always

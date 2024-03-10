@@ -30,7 +30,7 @@ public class VitrixApplication {
                 admin.setUsername(username);
                 admin.setPassword(password);
                 userRepository.save(admin);
-
+                return;
             }
 
             var admin = new UserEntity();

@@ -22,11 +22,14 @@ import static ru.vitrix.entity.Role.ADMIN;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
-    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*", "/posts", "/user/profile/{id}", "/api/v1/images/*", "/auth/registration"};
+    private final UserRepository userRepository;
+
+    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*",
+            "/posts", "/user/profile/{id}", "/api/v1/images/*", "/auth/registration"
+    };
     private static final String[] ANONYMOUS_PATHS = {"/auth/registration"};
     private static final String[] ADMIN_PATHS = {"/admin/*"};
 
-    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,7 +57,7 @@ public class WebSecurityConfiguration {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        var authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(userDetailsService());
         return authProvider;

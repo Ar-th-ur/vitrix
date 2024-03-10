@@ -25,18 +25,9 @@ public class ImageEntity extends BaseAuditEntity {
     @Column(name = "file_size")
     private Long size;
 
-    @Column(name = "contentType")
+    @Column(name = "content_type")
     private String contentType;
 
     @Column(name = "data")
     private byte[] bytes;
-
-    public static ImageEntity from(MultipartFile file) throws IOException {
-        return ImageEntity.builder()
-                .fileName(file.getName())
-                .contentType(file.getContentType())
-                .size(file.getSize())
-                .bytes(file.getBytes())
-                .build();
-    }
 }
