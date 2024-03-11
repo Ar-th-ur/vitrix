@@ -3,6 +3,7 @@ package ru.vitrix.service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.vitrix.dto.UserDto;
 import ru.vitrix.entity.UserEntity;
+import ru.vitrix.exception.FileException;
 
 public interface UserService {
     UserDto save(UserDto userDto, MultipartFile file);

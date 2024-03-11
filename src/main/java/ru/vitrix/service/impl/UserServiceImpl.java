@@ -12,8 +12,10 @@ import ru.vitrix.dto.mapper.UserMapper;
 import ru.vitrix.entity.ImageEntity;
 import ru.vitrix.entity.Role;
 import ru.vitrix.entity.UserEntity;
+import ru.vitrix.exception.FileException;
 import ru.vitrix.exception.NotFoundException;
 import ru.vitrix.repository.UserRepository;
+import ru.vitrix.service.ImageService;
 import ru.vitrix.service.UserService;
 
 import java.io.IOException;
@@ -22,9 +24,11 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserMapper mapper;
     private final UserRepository userRepository;
+    private final ImageService imageService;
+
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper mapper;
 
     @Override
     @Transactional
@@ -32,14 +36,8 @@ public class UserServiceImpl implements UserService {
         var user = mapper.toEntity(userDto);
         var password = userDto.getPassword();
 
-        if (!file.isEmpty()) {
-            try {
-                var avatar = ImageEntity.from(file);
-                user.setAvatar(avatar);
-            } catch (IOException e) {
-                log.error("Failed to receive bytes from file", e);
-            }
-        }
+        var image = imageService.fromFile(file);
+        user.setAvatar(image);
 
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(password));
@@ -49,15 +47,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
     public boolean existByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 
+    @Override
     public UserDto update(UserEntity userEntity) {
         var savedUser = userRepository.save(userEntity);
         return mapper.toDto(savedUser);
     }
 
+    @Override
     public UserEntity findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(
@@ -70,16 +71,17 @@ public class UserServiceImpl implements UserService {
         return mapper.toDto(findById(id));
     }
 
+
+    @Override
+    public UserDto getByUsername(String username) {
+        return mapper.toDto(findByUsername(username));
+    }
+
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(
                         () -> new UsernameNotFoundException("User with username \"%s\" not found".formatted(username))
                 );
-    }
-
-    @Override
-    public UserDto getByUsername(String username) {
-        return mapper.toDto(findByUsername(username));
     }
 
 }

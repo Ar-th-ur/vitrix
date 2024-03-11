@@ -28,7 +28,7 @@ public class VitrixApplication {
             if (adminOpt.isPresent()) {
                 var admin = adminOpt.get();
                 admin.setUsername(username);
-                admin.setPassword(password);
+                admin.setPassword(passwordEncoder.encode(password));
                 userRepository.save(admin);
 
             }

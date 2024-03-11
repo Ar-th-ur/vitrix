@@ -11,30 +11,31 @@ import ru.vitrix.dto.PostDto;
 import ru.vitrix.dto.mapper.PostMapper;
 import ru.vitrix.entity.ImageEntity;
 import ru.vitrix.entity.PostEntity;
+import ru.vitrix.exception.FileException;
 import ru.vitrix.repository.PostRepository;
+import ru.vitrix.service.ImageService;
 import ru.vitrix.service.PostService;
+import ru.vitrix.service.UserService;
 
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-    private final PostMapper mapper;
+    private final ImageService imageService;
+    private final UserService userService;
 
     private final PostRepository postRepository;
-    private final UserServiceImpl userService;
+    private final PostMapper mapper;
+
 
     public PostDto save(PostDto postDto, String username, MultipartFile file) {
         PostEntity post = mapper.toEntity(postDto);
         var owner = userService.findByUsername(username);
-        try {
-            ImageEntity imageEntity = ImageEntity.from(file);
-            post.setImage(imageEntity);
-        } catch (IOException e) {
-            log.error("Failed to receive bytes from file", e);
-        }
+
+        var imageEntity = imageService.fromFile(file);
+        post.setImage(imageEntity);
 
         post.setOwner(owner);
         postRepository.save(post);
@@ -49,7 +50,7 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(id);
     }
 
-    public PageResponse<PostDto> getAll(String title, int pageNo, int size) {
+    public PageResponse<PostDto> findAll(String title, int pageNo, int size) {
         PageRequest pageRequest = PageRequest.of(pageNo, size);
         Page<PostEntity> page;
         if (title.isBlank()) {

@@ -1,21 +1,26 @@
 package ru.vitrix.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.vitrix.dto.PageResponse;
 import ru.vitrix.dto.PostDto;
-import ru.vitrix.service.impl.PostServiceImpl;
+import ru.vitrix.exception.FileException;
+import ru.vitrix.service.PostService;
 
 import java.security.Principal;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostServiceImpl service;
+    private final PostService service;
 
     @GetMapping
     public String posts(
@@ -24,7 +29,7 @@ public class PostController {
             @RequestParam(value = "size", defaultValue = "30") int size,
             Model model
     ) {
-        PageResponse<PostDto> pageResponse = service.getAll(search, pageNo, size);
+        PageResponse<PostDto> pageResponse = service.findAll(search, pageNo, size);
         model.addAttribute("search", search);
         model.addAttribute("page", pageResponse);
         return "index";
@@ -35,11 +40,13 @@ public class PostController {
         return "posts/create";
     }
 
+
     @PostMapping
     public String createPost(
             @ModelAttribute("post") PostDto postDto,
             @RequestParam("file") MultipartFile file,
-            Principal principal) {
+            Principal principal
+    ) {
         var username = principal.getName();
         service.save(postDto, username, file);
         return "redirect:/posts";

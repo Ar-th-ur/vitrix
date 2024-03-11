@@ -12,14 +12,16 @@
                 <h1>Ваш пост</h1>
 
                 <!-- Error message -->
-                <div th:if="${error}">
+                <div th:if="${errorMessage}">
                     <div class="alert alert-danger mt-4">
                         <span th:text="${errorMessage}"></span>
                     </div>
                 </div>
 
+                <p>Выберите изображение формата .png или .jpeg размером до 5 мб</p>
+
                 <!-- Image -->
-                <input class="mt-5"
+                <input class="mt-5 form-control"
                        type="file"
                        name="file"
                        accept="image/jpeg, image/png"
