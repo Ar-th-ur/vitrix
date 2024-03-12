@@ -1,20 +1,15 @@
 package ru.vitrix.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.vitrix.dto.PageResponse;
 import ru.vitrix.dto.PostDto;
-import ru.vitrix.exception.FileException;
 import ru.vitrix.service.PostService;
 
 import java.security.Principal;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/posts")
@@ -23,12 +18,10 @@ public class PostController {
     private final PostService service;
 
     @GetMapping
-    public String posts(
-            @RequestParam(value = "search", defaultValue = "") String search,
-            @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
-            @RequestParam(value = "size", defaultValue = "30") int size,
-            Model model
-    ) {
+    public String posts(@RequestParam(value = "search", defaultValue = "") String search,
+                        @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
+                        @RequestParam(value = "size", defaultValue = "30") int size,
+                        Model model) {
         PageResponse<PostDto> pageResponse = service.findAll(search, pageNo, size);
         model.addAttribute("search", search);
         model.addAttribute("page", pageResponse);
@@ -42,11 +35,9 @@ public class PostController {
 
 
     @PostMapping
-    public String createPost(
-            @ModelAttribute("post") PostDto postDto,
-            @RequestParam("file") MultipartFile file,
-            Principal principal
-    ) {
+    public String createPost(@ModelAttribute("post") PostDto postDto,
+                             @RequestParam("file") MultipartFile file,
+                             Principal principal) {
         var username = principal.getName();
         service.save(postDto, username, file);
         return "redirect:/posts";
@@ -57,4 +48,5 @@ public class PostController {
         service.deleteById(id);
         return "redirect:/user/profile";
     }
+
 }

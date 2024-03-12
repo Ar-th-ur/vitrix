@@ -25,14 +25,14 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ImageEntity fromFile(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new FileException("File can not be empty");
+            throw new FileException("file.error.empty");
         }
         if (file.getSize() > maxFileSize.toBytes()) {
-            throw new FileException("Maximum file size is %d mb".formatted(maxFileSize.toMegabytes()));
+            throw new FileException("file.error.max_size");
         }
         String contentType = file.getContentType();
         if (!Arrays.asList(allowedContentTypes).contains(contentType)) {
-            throw new FileException("Not allowed file content type");
+            throw new FileException("file.error.not_allowed_type");
         }
 
         try {
@@ -43,7 +43,7 @@ public class ImageServiceImpl implements ImageService {
                     .bytes(file.getBytes())
                     .build();
         } catch (IOException e) {
-            throw new FileException("Failed to receive bytes from the file");
+            throw new FileException("file.error.failed_to_read");
         }
     }
 }

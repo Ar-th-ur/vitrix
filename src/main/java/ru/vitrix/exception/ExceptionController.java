@@ -1,28 +1,44 @@
 package ru.vitrix.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.WebUtils;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-public class ExceptionController implements ErrorController {
+import java.util.Locale;
 
-    @RequestMapping("/error")
-    public String handleError(HttpServletRequest request, Model model) {
-        int statusCode = (int) request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE);
-        String errorMessage = switch (statusCode) {
-            case 404 -> "Такой страницы нет.";
-            case 403 -> "У вас нет прав доступа к этой странице";
-            default -> "Что то пошло нет. Мы уже исправляем";
-        };
+@ControllerAdvice
+@RequiredArgsConstructor
+public class ExceptionController {
+    private final MessageSource messageSource;
 
-        model.addAttribute("errorMessage", errorMessage);
-        model.addAttribute("statusCode", statusCode);
-        return "errors/error";
+    @ExceptionHandler(FileException.class)
+    public ModelAndView handleFileException(FileException exception, Locale locale) {
+        return getErrorPage(exception.getMessage(), HttpStatus.BAD_REQUEST, locale);
+    }
+
+    @ExceptionHandler(HttpClientErrorException.NotFound.class)
+    public ModelAndView handleBadRequest(HttpClientErrorException.NotFound exception, Locale locale) {
+        return getErrorPage("http.error.not_found", exception.getStatusCode(), locale);
+    }
+
+    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
+    public ModelAndView handleBadRequest(HttpServerErrorException.InternalServerError exception, Locale locale) {
+        return getErrorPage("server.error", exception.getStatusCode(), locale);
+    }
+
+    private ModelAndView getErrorPage(String message, HttpStatusCode statusCode, Locale locale) {
+        var errorMessage = messageSource.getMessage(message, new Object[0], locale);
+
+        var model = new ModelAndView("errors/error");
+        model.addObject("errorMessage", errorMessage);
+        model.addObject("statusCode", statusCode.value());
+        return model;
     }
 }

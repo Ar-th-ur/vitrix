@@ -8,9 +8,11 @@
         <div class="d-flex align-items-center justify-content-center vh-100">
             <div class="text-center">
                 <h1 class="display-1 fw-bold" th:text="${statusCode}"></h1>
-                <p class="fs-3 text-danger">Упс!</p>
+                <p class="fs-2 fw-bold text-danger">Упс!</p>
                 <p class="lead" th:text="${errorMessage}"></p>
-                <a href="/posts" class="btn btn-primary">Вернуться</a>
+                <script>
+                    document.write('<a href="' + document.referrer + '" class="btn btn-primary">Вернуться</a>');
+                </script>
             </div>
         </div>
     </body>
