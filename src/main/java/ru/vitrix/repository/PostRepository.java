@@ -10,6 +10,10 @@ import ru.vitrix.entity.PostEntity;
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
-    @Query("select p from PostEntity p where p.title = ?1 and p.owner.isAccountLocked = false")
+    @Query("select p from PostEntity p where lower(p.title) = lower(?1) and p.owner.isAccountLocked = false")
     Page<PostEntity> findAllByTitle(String title, Pageable pageable);
+
+    @Override
+    @Query("select p from PostEntity p where p.owner.isAccountLocked = false")
+    Page<PostEntity> findAll(Pageable pageable);
 }

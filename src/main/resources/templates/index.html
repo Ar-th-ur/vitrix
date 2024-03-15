@@ -23,8 +23,8 @@
             </form>
 
             <h2 class="mt-5 text-center" th:if="${page.content == null or page.content.isEmpty()}">Пусто :(</h2>
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 mt-5">
-                <div class="mb-3" th:each="post : ${page.content}">
+            <div class="row g-2 row-cols-2 row-cols-md-3 row-cols-lg-4 mt-5">
+                <div class="sm-md-1 md-mb-3" th:each="post : ${page.content}">
                     <a th:href="@{/user/profile/{id}(id = ${post.ownerId})}">
                         <img th:src="@{/api/v1/images/{id}(id = ${post.imageId})}"
                              class="rounded"
@@ -32,36 +32,6 @@
                              alt="Фото было удалено">
                     </a>
                 </div>
-                <!--        <div class="mb-4 col" style="height: 380px; max-block-size: 300px">-->
-                <!--            <img src="/static/img/logo.png"-->
-                <!--                 class="rounded"-->
-                <!--                 style="max-width: 100%; background: black; max-block-size: 300px"-->
-                <!--                 alt="Фото было удалено">-->
-                <!--        </div>-->
-                <!--        <div class="mb-4 col">-->
-                <!--            <img src="/static/img/a.jpg"-->
-                <!--                 class="rounded"-->
-                <!--                 style="max-width: 100%; background: black"-->
-                <!--                 alt="Фото было удалено">-->
-                <!--        </div>-->
-                <!--        <div class="mb-4 col">-->
-                <!--            <img src="/static/img/8.jpg"-->
-                <!--                 class="rounded"-->
-                <!--                 style="max-width: 100%; background: black"-->
-                <!--                 alt="Фото было удалено">-->
-                <!--        </div>-->
-                <!--        <div class="mb-4 col">-->
-                <!--            <img src="/static/img/PXN09.jpg"-->
-                <!--                 class="rounded"-->
-                <!--                 style="max-width: 100%; background: black"-->
-                <!--                 alt="Фото было удалено">-->
-                <!--        </div>-->
-                <!--        <div class="mb-4 col">-->
-                <!--            <img src="/static/img/a.jpg"-->
-                <!--                 class="rounded"-->
-                <!--                 style="max-width: 100%; background: black"-->
-                <!--                 alt="Фото было удалено">-->
-                <!--        </div>-->
             </div>
         </div>
     </body>

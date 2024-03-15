@@ -1,5 +1,6 @@
 package ru.vitrix.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,9 +45,10 @@ public class PostController {
     }
 
     @DeleteMapping
-    public String delete(@RequestParam("postId") Long id) {
+    public String delete(@RequestParam("postId") Long id, HttpServletRequest request) {
         service.deleteById(id);
-        return "redirect:/user/profile";
+        var referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 
 }

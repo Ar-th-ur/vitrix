@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Locale;
@@ -28,6 +28,7 @@ public class ExceptionController {
         return getErrorPage("http.error.not_found", exception.getStatusCode(), locale);
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     public ModelAndView handleBadRequest(HttpServerErrorException.InternalServerError exception, Locale locale) {
         return getErrorPage("server.error", exception.getStatusCode(), locale);

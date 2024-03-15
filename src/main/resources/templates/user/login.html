@@ -10,10 +10,15 @@
             <form action="/auth/login" method="post">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
 
-                <div th:if="${error}">
-                    <!-- Error message -->
+                <!-- Error messages -->
+                <div th:if="${wrongPasOrLogin}">
                     <div class="alert alert-danger mt-4">
-                        <span th:text="#{error.wrong_password_or_login}"></span>
+                        <span th:text="#{user.error.wrong_password_or_login}"></span>
+                    </div>
+                </div>
+                <div th:if="${accLocked}">
+                    <div class="alert alert-danger mt-4">
+                        <span th:text="#{user.error.account_locked}"></span>
                     </div>
                 </div>
 

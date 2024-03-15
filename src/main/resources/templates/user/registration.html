@@ -11,12 +11,12 @@
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
 
                 <!-- Avatar -->
-                <input class="form-control" type="file" name="file"/>
+                <input class="form-control" type="file" name="file" required/>
 
                 <!-- Error message -->
                 <div th:if="${error}">
                     <div class="alert alert-danger mt-4">
-                        <span th:text="#{error.login_is_busy}"></span>
+                        <span th:text="#{user.error.login_is_busy}"></span>
                     </div>
                 </div>
                 <div th:if="${errorMessage}">

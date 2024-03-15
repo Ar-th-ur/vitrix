@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AdminService {
 
-    List<UserDto> findAll(int pageNumber, int pageSize);
+    List<UserDto> findAllUsers(int pageNumber, int pageSize);
 
     void banUserById(Long id);
 

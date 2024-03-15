@@ -55,14 +55,11 @@
                                     <!-- Subtitle -->
                                     <div class="card-subtitle">
 
-                                        <!-- Title -->
-                                        <b th:text="${post.title}">Название</b>
-
                                         <!-- Date -->
-                                        <i class="small" th:text="${post.inDay} ?
-                                        ${#temporals.format(post.createdAt, 'HH:mm')}
-                                        : ${#temporals.format(post.createdAt, 'dd.MM.yyyy')}">
-                                        </i>
+                                        <b class="title" th:text="${post.inDay} ?
+                                            ${#temporals.format(post.createdAt, 'HH:mm')}
+                                            : ${#temporals.format(post.createdAt, 'dd.MM.yyyy')}">
+                                        </b>
                                     </div>
                                 </div>
 
@@ -73,7 +70,7 @@
                                     Удалить пост
                                 </button>
 
-                                <!-- For admin -->
+                                <!-- Delete for admin -->
                                 <button th:if="${!isOwner}" sec:authorize="hasRole('ADMIN')"
                                         class="alert alert-warning ms-2 me-2 p-1 mb-2"
                                         type="submit">

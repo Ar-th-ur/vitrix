@@ -12,7 +12,6 @@
                 <thead>
                     <tr>
                         <th>Имя</th>
-                        <th>Роль</th>
                         <th>Состояние</th>
                         <th>Действие</th>
                     </tr>
@@ -22,18 +21,17 @@
                         <td>
                             <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}"></a>
                         </td>
-                        <td th:text="${user.role}">USER</td>
                         <td th:text="${user.accountLocked ? 'Заблокирован' : 'Не заблокирован'}"></td>
                         <td>
                             <form th:if="${user.accountLocked}"
                                   th:action="@{/admin/unban-user/{id}(id = ${user.id})}"
                                   th:method="PATCH">
-                                <input type="submit" value="Разблокировать">
+                                <input class="button button-danger" type="submit" value="Разблокировать">
                             </form>
-                            <form th:if="${user.accountNonLocked}"
+                            <form th:if="${!user.accountLocked}"
                                   th:action="@{/admin/ban-user/{id}(id = ${user.id})}"
                                   th:method="PATCH">
-                                <input type="submit" value="Заблокировать">
+                                <input class="button button-success" type="submit" value="Заблокировать">
                             </form>
                         </td>
                     </tr>

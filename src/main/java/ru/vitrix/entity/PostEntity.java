@@ -22,7 +22,7 @@ public class PostEntity extends BaseAuditEntity {
     @JoinColumn(name = "image_id")
     private ImageEntity image;
 
-    @ManyToOne(cascade = REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity owner;
 }

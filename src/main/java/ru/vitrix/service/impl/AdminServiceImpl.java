@@ -22,13 +22,14 @@ public class AdminServiceImpl implements AdminService {
     private final UserMapper userMapper;
 
     @Override
-    public List<UserDto> findAll(int pageNumber, int pageSize) {
-        var currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
+    public List<UserDto> findAllUsers(int pageNumber, int pageSize) {
         var pageRequest = PageRequest.of(pageNumber, pageSize);
         var page = userRepository.findAll(pageRequest);
         var users = new ArrayList<>(page.getContent());
 
+        var currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
         users.removeIf(user -> Objects.equals(user.getUsername(), currentAuthentication.getName()));
+
         return users.stream().map(userMapper::toDto).toList();
     }
 

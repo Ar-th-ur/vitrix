@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import ru.vitrix.repository.UserRepository;
 
 import static ru.vitrix.entity.Role.ADMIN;
@@ -22,7 +25,8 @@ import static ru.vitrix.entity.Role.ADMIN;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
-    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*", "/posts", "/user/profile/{id}", "/api/v1/images/*", "/auth/registration"};
+    private static final String[] PERMIT_ALL_PATHS = {"/images/**", "/js/**", "/favicon.*", "/posts",
+            "/user/profile/{id}", "/api/v1/images/*", "/auth/registration", "/auth/login"};
     private static final String[] ANONYMOUS_PATHS = {"/auth/registration"};
     private static final String[] ADMIN_PATHS = {"/admin/*"};
 
@@ -40,9 +44,8 @@ public class WebSecurityConfiguration {
                 )
                 .formLogin(login -> login
                         .loginPage("/auth/login")
-                        .defaultSuccessUrl("/posts", true)
-                        .failureUrl("/auth/login?error=true")
-                        .permitAll()
+                        .defaultSuccessUrl("/posts")
+                        .failureHandler(authenticationFailureHandler())
                 )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
@@ -53,8 +56,19 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            if (exception instanceof LockedException) {
+                response.sendRedirect("/auth/login?accLocked=true");
+            } else if (exception instanceof BadCredentialsException) {
+                response.sendRedirect("/auth/login?wrongPasOrLogin=true");
+            }
+        };
+    }
+
+    @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        var authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(userDetailsService());
         return authProvider;

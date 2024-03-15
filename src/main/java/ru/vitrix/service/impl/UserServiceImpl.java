@@ -9,16 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.vitrix.dto.UserDto;
 import ru.vitrix.dto.mapper.UserMapper;
-import ru.vitrix.entity.ImageEntity;
 import ru.vitrix.entity.Role;
 import ru.vitrix.entity.UserEntity;
-import ru.vitrix.exception.FileException;
 import ru.vitrix.exception.NotFoundException;
 import ru.vitrix.repository.UserRepository;
 import ru.vitrix.service.ImageService;
 import ru.vitrix.service.UserService;
-
-import java.io.IOException;
 
 @Slf4j
 @Service
