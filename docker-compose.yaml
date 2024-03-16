@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    restart: no
+    restart: unless-stopped
     ports:
       - "8081:8081"
     environment:
@@ -19,7 +19,7 @@ services:
   db:
     image: postgres:16-alpine
     container_name: vitrix-app-db
-    restart: no
+    restart: always
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:

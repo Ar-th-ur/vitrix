@@ -20,10 +20,10 @@ public class PostController {
 
     @GetMapping
     public String posts(@RequestParam(value = "search", defaultValue = "") String search,
-                        @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
+                        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
                         @RequestParam(value = "size", defaultValue = "30") int size,
                         Model model) {
-        PageResponse<PostDto> pageResponse = service.findAll(search, pageNo, size);
+        PageResponse<PostDto> pageResponse = service.findAll(search, pageNumber, size);
         model.addAttribute("search", search);
         model.addAttribute("page", pageResponse);
         return "index";

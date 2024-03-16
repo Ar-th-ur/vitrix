@@ -4,12 +4,13 @@
     <head>
         <title>Профиль</title>
         <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+        <th:block th:replace="~{fragments :: gridify}" th:remove="tag"></th:block>
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
 
         <!-- Information -->
-        <div class="container col-11 col-md-10 text-center">
+        <div class="container text-center">
             <div class="col mt-5 text-start">
 
                 <!-- Default photo -->
@@ -23,7 +24,7 @@
                      th:src="@{/api/v1/images/{id}(id = ${user.avatarId})}"
                      alt="img"
                      style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center;">
-                <b class="fs-2 mx-3" th:text="${user.username}">username</b>
+                <b class="fs-2 mx-3" th:text="${user.username}"></b>
             </div>
 
             <!-- State -->
@@ -36,8 +37,8 @@
             <!-- Posts -->
             <div th:if="${!user.isAccountLocked}">
                 <h2 class="mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
-                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 mt-5">
-                    <div class="mb-4" th:each="post : ${user.posts}">
+                <div class="grid">
+                    <div th:each="post : ${user.posts}">
                         <form action="/posts" th:method="DELETE">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <input type="hidden" name="postId" th:value="${post.id}">
@@ -54,6 +55,7 @@
 
                                     <!-- Subtitle -->
                                     <div class="card-subtitle">
+
 
                                         <!-- Date -->
                                         <b class="title" th:text="${post.inDay} ?
@@ -82,5 +84,16 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(function () {
+                var options = {
+                    srcNode: 'form',
+                    margin: '10px',
+                    max_width: '300px',
+                    resizable: true,
+                };
+                $('.grid').gridify(options);
+            });
+        </script>
     </body>
 </html>
