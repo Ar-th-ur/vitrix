@@ -21,17 +21,16 @@ import static jakarta.persistence.CascadeType.*;
 @ToString(callSuper = true, exclude = {"avatar", "password", "posts"})
 @Table(name = "users")
 public class UserEntity extends BaseAuditEntity implements UserDetails {
-
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "is_account_locked")
+    @Column(name = "is_account_locked", nullable = false)
     private boolean isAccountLocked;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -39,14 +38,12 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
     @OneToOne(cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY)
     private ImageEntity avatar;
 
-    @OneToMany(cascade = ALL, fetch = FetchType.EAGER, mappedBy = "owner")
+    @OneToMany(cascade = {PERSIST, REFRESH, REMOVE}, fetch = FetchType.EAGER, mappedBy = "owner")
     private List<PostEntity> posts = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(
-                new SimpleGrantedAuthority("ROLE_" + role.name())
-        );
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.vitrix.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,12 +8,9 @@ import ru.vitrix.service.AdminService;
 
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
     private final AdminService adminService;
-
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
 
     @GetMapping("/panel")
     public String getAllUsers(@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,

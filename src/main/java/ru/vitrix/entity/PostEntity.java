@@ -11,18 +11,17 @@ import static jakarta.persistence.CascadeType.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true, exclude = {"image"})
+@ToString(callSuper = true, exclude = {"image", "owner"})
 @Table(name = "posts")
 public class PostEntity extends BaseAuditEntity {
-
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
     @OneToOne(cascade = {REMOVE, PERSIST}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_id")
+    @JoinColumn(name = "image_id", nullable = false)
     private ImageEntity image;
 
     @ManyToOne(cascade = REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity owner;
 }

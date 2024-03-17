@@ -5,11 +5,9 @@ import ru.vitrix.dto.UserDto;
 import ru.vitrix.entity.UserEntity;
 
 public interface UserService {
-    UserDto save(UserDto userDto, MultipartFile file);
+    void save(UserDto userDto, MultipartFile file);
 
     boolean existByUsername(String username);
-
-    UserDto update(UserEntity userEntity);
 
     UserEntity findById(Long id);
 

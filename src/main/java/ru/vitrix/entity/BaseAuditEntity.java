@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseAuditEntity extends BaseEntity implements Serializable {
-
     @CreatedDate
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss")
     @Column(name = "created_at")

@@ -1,25 +1,25 @@
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title>Создание поста</title>
-        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+        <title th:text="#{html.posts.create.title}"/>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"/>
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
         <div class="container col-10 col-md-8 col-lg-4 mt-3 text-center">
             <form action="/posts" method="post" th:object="${post}" enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                <h1>Ваш пост</h1>
+                <h1 th:text="#{html.posts.create.subtitle}"/>
 
                 <!-- Error message -->
                 <div th:if="${errorMessage}">
                     <div class="alert alert-danger mt-4">
-                        <span th:text="${errorMessage}"></span>
+                        <span th:text="${errorMessage}"/>
                     </div>
                 </div>
                 <hr>
 
-                <p>Выберите изображение <br> формата png или jpeg размером до 5 мб</p>
+                <p th:text="#{html.posts.create.information}"/>
 
                 <!-- Image -->
                 <input class="mt-5 form-control"
@@ -33,11 +33,11 @@
                        class="form-control mt-3"
                        type="text"
                        required
-                       placeholder="Название"
+                       th:placeholder="#{html.posts.create.image_title}"
                        maxlength="30">
 
                 <!-- Submit -->
-                <input type="submit" class="btn btn-primary mt-4" value="Опубликовать">
+                <input type="submit" class="btn btn-primary mt-4" th:value="#{html.posts.create.publish}">
             </form>
         </div>
     </body>

@@ -2,9 +2,9 @@
 <html lang="ru" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <head>
-        <title>Профиль</title>
-        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
-        <th:block th:replace="~{fragments :: gridify}" th:remove="tag"></th:block>
+        <title th:text="#{html.user.profile.title}"/>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"/>
+        <th:block th:replace="~{fragments :: gridify}" th:remove="tag"/>
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
@@ -12,7 +12,6 @@
         <!-- Information -->
         <div class="container text-center">
             <div class="col mt-5 text-start">
-
                 <!-- Default photo -->
                 <img th:if="${user.avatarId == null}"
                      alt="img"
@@ -29,14 +28,14 @@
 
             <!-- State -->
             <div th:if="${user.isAccountLocked}" class="alert alert-danger mt-4 text-center">
-                <h5>Пользователь заблокирован</h5>
+                <h5 th:text="#{html.user.profile.user.locked}"/>
             </div>
 
             <hr>
 
             <!-- Posts -->
             <div th:if="${!user.isAccountLocked}">
-                <h2 class="mt-5" th:if="${user.posts.isEmpty()}">Пусто :(</h2>
+                <h2 class="mt-5" th:if="${user.posts.isEmpty()}" th:text="#{html.user.label.no_posts}"/>
                 <div class="grid">
                     <div th:each="post : ${user.posts}">
                         <form action="/posts" th:method="DELETE">
@@ -45,38 +44,35 @@
 
                             <!-- Post -->
                             <div class="card">
-
                                 <!-- Image -->
                                 <img th:src="@{/api/v1/images/{id}(id = ${post.imageId})}"
                                      class="card-img-top"
                                      style="max-width: 100%"
                                      alt="...">
                                 <div class="card-body">
-
                                     <!-- Subtitle -->
                                     <div class="card-subtitle">
-
+                                        <!-- Title -->
+                                        <b class="title" th:text="${post.title}"/>
 
                                         <!-- Date -->
-                                        <b class="title" th:text="${post.inDay} ?
+                                        <i class="small" th:text="${post.inDay} ?
                                             ${#temporals.format(post.createdAt, 'HH:mm')}
                                             : ${#temporals.format(post.createdAt, 'dd.MM.yyyy')}">
-                                        </b>
+                                        </i>
                                     </div>
                                 </div>
 
                                 <!-- Delete button -->
                                 <button th:if="${isOwner}"
                                         class="alert alert-warning ms-2 me-2 p-1 mb-2"
-                                        type="submit">
-                                    Удалить пост
+                                        type="submit" th:text="#{html.user.profile.remove_post}">
                                 </button>
 
                                 <!-- Delete for admin -->
                                 <button th:if="${!isOwner}" sec:authorize="hasRole('ADMIN')"
                                         class="alert alert-warning ms-2 me-2 p-1 mb-2"
-                                        type="submit">
-                                    Удалить пост
+                                        type="submit" th:text="#{html.user.profile.remove_post}">
                                 </button>
                             </div>
                         </form>

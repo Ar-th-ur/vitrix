@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ru" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title>Регистрация</title>
-        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+        <title th:text="#{html.user.registration.title}"/>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"/>
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
@@ -16,7 +16,7 @@
                 <!-- Error message -->
                 <div th:if="${error}">
                     <div class="alert alert-danger mt-4">
-                        <span th:text="#{user.error.login_is_busy}"></span>
+                        <span th:text="#{html.user.registration.error.login_is_taken}"></span>
                     </div>
                 </div>
                 <div th:if="${errorMessage}">
@@ -33,8 +33,8 @@
                            id="login"
                            class="form-control"
                            maxlength="18"
-                           placeholder="Логин"/>
-                    <label for="login">Логин</label>
+                           th:placeholder="#{html.user.label.login}"/>
+                    <label for="login" th:text="#{html.user.label.login}"/>
                 </div>
 
                 <!-- Password input -->
@@ -48,8 +48,8 @@
                                minlength="4"
                                maxlength="20"
                                aria-describedby="eye"
-                               placeholder="Пароль"/>
-                        <label for="password">Пароль</label>
+                               th:placeholder="#{html.user.label.password}"/>
+                        <label for="password" th:text="#{html.user.label.password}"/>
                     </div>
                     <span class="input-group-text" onclick="password_show_hide();">
                         <i class="fas fa-eye" id="show_eye"></i>
@@ -58,11 +58,12 @@
                 </div>
 
                 <!-- Submit button -->
-                <input type="submit" class="btn btn-primary btn-block mt-3" value="Зарегистрироваться" style="width: 100%">
+                <input type="submit" class="btn btn-primary btn-block mt-3" th:value="#{html.user.registration.sign_up}" style="width: 100%">
 
                 <!-- Register buttons -->
                 <div class="text-center mt-5">
-                    <p>Уже есть аккаунт? <a href="/auth/login">Войти</a></p>
+                    <span th:text="#{html.user.registration.have_account}"></span>
+                    <a href="/auth/login" th:text="#{html.user.label.sign_in}"/>
                 </div>
             </form>
         </div>

@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title th:text="${errorMessage}"></title>
-        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+        <title th:text="${errorMessage}"/>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"/>
     </head>
     <body>
         <div class="d-flex align-items-center justify-content-center vh-100">
             <div class="text-center">
-                <h1 class="display-1 fw-bold" th:text="${statusCode}"></h1>
-                <p class="fs-2 fw-bold text-danger">Упс!</p>
-                <p class="lead" th:text="${errorMessage}"></p>
-                <script>
-                    document.write('<a href="' + document.referrer + '" class="btn btn-primary">Вернуться</a>');
-                </script>
+                <h1 class="display-1 fw-bold" th:text="${statusCode}"/>
+                <p class="fs-2 fw-bold text-danger" th:text="#{html.error.oops}"/>
+                <p class="lead" th:text="${errorMessage}"/>
+                <a class="btn btn-primary" th:href="${referer}" th:text="#{html.error.back}"/>
             </div>
         </div>
     </body>

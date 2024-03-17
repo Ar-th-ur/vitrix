@@ -28,30 +28,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto save(UserDto userDto, MultipartFile file) {
+    public void save(UserDto userDto, MultipartFile file) {
         var user = mapper.toEntity(userDto);
         var password = userDto.getPassword();
-
         var image = imageService.fromFile(file);
-        user.setAvatar(image);
 
+        user.setAvatar(image);
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(password));
-        userRepository.save(user);
+
         log.info("Saving new user {}", user);
-        return mapper.toDto(user);
+        mapper.toDto(user);
     }
 
 
     @Override
+    @Transactional
     public boolean existByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public UserDto update(UserEntity userEntity) {
-        var savedUser = userRepository.save(userEntity);
-        return mapper.toDto(savedUser);
     }
 
     @Override
@@ -67,12 +61,14 @@ public class UserServiceImpl implements UserService {
         return mapper.toDto(findById(id));
     }
 
-
     @Override
+    @Transactional
     public UserDto getByUsername(String username) {
         return mapper.toDto(findByUsername(username));
     }
 
+    @Override
+    @Transactional
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(

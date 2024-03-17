@@ -5,9 +5,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Entity
 @Getter
@@ -18,25 +15,15 @@ import java.io.IOException;
 @ToString(callSuper = true, exclude = {"bytes"})
 @Table(name = "images")
 public class ImageEntity extends BaseAuditEntity {
-
-    @Column(name = "file_name")
+    @Column(name = "file_name", nullable = false)
     private String fileName;
 
-    @Column(name = "file_size")
+    @Column(name = "file_size", nullable = false)
     private Long size;
 
-    @Column(name = "contentType")
+    @Column(name = "contentType", nullable = false)
     private String contentType;
 
-    @Column(name = "data")
+    @Column(name = "data", nullable = false)
     private byte[] bytes;
-
-    public static ImageEntity from(MultipartFile file) throws IOException {
-        return ImageEntity.builder()
-                .fileName(file.getName())
-                .contentType(file.getContentType())
-                .size(file.getSize())
-                .bytes(file.getBytes())
-                .build();
-    }
 }

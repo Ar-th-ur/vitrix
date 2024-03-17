@@ -21,8 +21,8 @@ public class VitrixApplication {
     @Bean
     CommandLineRunner setAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return (args) -> {
-            String username = System.getenv("ADMIN_USERNAME");
-            String password = System.getenv("ADMIN_PASSWORD");
+            var username = System.getenv("ADMIN_USERNAME");
+            var password = System.getenv("ADMIN_PASSWORD");
 
             var adminOpt = userRepository.findByUsername(username);
             if (adminOpt.isPresent()) {

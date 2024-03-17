@@ -36,7 +36,7 @@ public class AuthenticationController {
     @PostMapping("/registration")
     public String register(@ModelAttribute("user") UserDto userDto,
                            @RequestParam(value = "file") MultipartFile file) {
-        String username = userDto.getUsername();
+        var username = userDto.getUsername();
         if (userService.existByUsername(username)) {
             return "redirect:/auth/registration?error=true";
         }
