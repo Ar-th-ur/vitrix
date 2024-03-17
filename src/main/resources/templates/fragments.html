@@ -38,22 +38,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/posts"><b>Главная</b></a>
+                        <a class="nav-link active" aria-current="page" href="/posts"><b th:text="#{html.fragments.look_posts}"/></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active"
                            aria-current="page"
-                           href="/user/profile"><b>Мой профиль</b></a>
+                           href="/user/profile"><b th:text="#{html.fragments.my_profile}"/></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active"
                            aria-current="page"
-                           href="/posts/create"><b>Создать пост</b></a>
+                           href="/posts/create"><b th:text="#{html.fragments.create_post}"/></a>
                     </li>
                     <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link active"
                            aria-current="page"
-                           href="/admin/panel"><b>Панель админа</b></a>
+                           href="/admin/panel"><b th:text="#{html.fragments.admin_panel}"/></a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -63,9 +63,8 @@
                                    th:value="${search} ?: ''"
                                    name="search"
                                    type="search"
-                                   placeholder="Поиск постов"
-                                   aria-label="Поиск">
-                            <button class="btn btn-outline-success ms-2 me-2" type="submit">Поиск</button>
+                                   th:placeholder="#{html.fragments.post_searching}">
+                            <button class="btn btn-outline-success ms-2 me-2" type="submit" th:text="#{html.fragments.search}"></button>
                         </form>
                     </li>
                     <li sec:authorize="!isAuthenticated()" class="nav-item">
@@ -74,7 +73,7 @@
                             <button type="submit"
                                     class="nav-link active"
                                     aria-current="page">
-                                <i class="fa-solid fa-right-to-bracket me-2"></i><b>Войти</b>
+                                <i class="fa-solid fa-right-to-bracket me-2"></i><b th:text="#{html.user.label.sign_in}"/>
                             </button>
                         </form>
                     </li>
@@ -84,7 +83,7 @@
                             <button type="submit"
                                     class="nav-link active"
                                     aria-current="page">
-                                <i class="fa-solid fa-right-from-bracket me-2"></i><b>Выйти</b>
+                                <i class="fa-solid fa-right-from-bracket me-2"></i><b th:text="#{html.user.label.logout}"/>
                             </button>
                         </form>
                     </li>
@@ -92,6 +91,10 @@
             </div>
         </div>
     </nav>
+
+    <div th:fragment="js">
+        <script type="text/javascript" src="/js/index.js"></script>
+    </div>
 
     <div th:fragment="gridify">
         <script src="/js/jquery-1.11.1.min.js"></script>

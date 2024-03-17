@@ -8,13 +8,13 @@
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
         <div class="container text-center mb-2">
-            <h2 class="text-center" th:if="${page.content == null or page.content.isEmpty()}">Пусто :(</h2>
+            <h2 class="text-center" th:if="${page.content == null or page.content.isEmpty()}" th:text="#{html.user.label.no_posts}"/>
             <div class="grid">
                 <div th:each="post : ${page.content}">
                     <a th:href="@{/user/profile/{id}(id = ${post.ownerId})}">
                         <img th:src="@{/api/v1/images/{id}(id = ${post.imageId})}"
                              class="rounded"
-                             alt="Фото было удалено">
+                             alt="#">
                     </a>
                 </div>
             </div>

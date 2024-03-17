@@ -7,16 +7,13 @@ import org.mapstruct.Mapping;
 import ru.vitrix.dto.UserDto;
 import ru.vitrix.entity.UserEntity;
 
-@Mapper(
-        componentModel = "spring",
+@Mapper(componentModel = "spring",
         builder = @Builder(disableBuilder = true),
-        uses = PostMapper.class
-)
+        uses = PostMapper.class)
 public interface UserMapper {
     @Mapping(target = "avatarId", source = "avatar.id")
     UserDto toDto(UserEntity userEntity);
 
     @InheritInverseConfiguration
     UserEntity toEntity(UserDto userDto);
-
 }

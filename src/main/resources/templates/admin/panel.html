@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title>Admin Panel</title>
-        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+        <title th:text="#{html.admin.panel.title}"/>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"/>
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
         <div class="container text-center">
-            <h3>Пользователи</h3>
+            <h3 th:text="#{html.admin.panel.users}"/>
             <table class="table table-bordered mt-3">
                 <thead>
                     <tr>
-                        <th>Имя</th>
-                        <th>Состояние</th>
-                        <th>Действие</th>
+                        <th th:text="#{html.admin.panel.user.name}"/>
+                        <th th:text="#{html.admin.panel.user.state}"/>
+                        <th th:text="#{html.admin.panel.action}"/>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="user : ${users}">
                         <td>
-                            <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}"></a>
+                            <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}"/>
                         </td>
-                        <td th:text="${user.accountLocked ? 'Заблокирован' : 'Не заблокирован'}"></td>
+                        <td th:text="${user.accountLocked ? #{html.admin.panel.user.locked} : #{html.admin.panel.user.not_locked}}"/>
                         <td>
                             <form th:if="${user.accountLocked}"
                                   th:action="@{/admin/unban-user/{id}(id = ${user.id})}"
                                   th:method="PATCH">
-                                <input class="button button-danger" type="submit" value="Разблокировать">
+                                <input class="button button-danger" type="submit" th:value="#{html.admin.panel.user.unlock}">
                             </form>
                             <form th:if="${!user.accountLocked}"
                                   th:action="@{/admin/ban-user/{id}(id = ${user.id})}"
                                   th:method="PATCH">
-                                <input class="button button-success" type="submit" value="Заблокировать">
+                                <input class="button button-success" type="submit" th:value="#{html.admin.panel.user.lock}">
                             </form>
                         </td>
                     </tr>

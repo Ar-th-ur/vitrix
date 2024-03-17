@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.vitrix.dto.UserDto;
 import ru.vitrix.dto.mapper.UserMapper;
 import ru.vitrix.entity.UserEntity;
@@ -34,6 +35,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void banUserById(Long id) {
         var user = findById(id);
         user.setAccountLocked(true);
@@ -41,6 +43,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void unbanUserById(Long id) {
         var user = findById(id);
         user.setAccountLocked(false);

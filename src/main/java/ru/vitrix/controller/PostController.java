@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.dto.PageResponse;
 import ru.vitrix.dto.PostDto;
 import ru.vitrix.service.PostService;
 
@@ -23,7 +22,7 @@ public class PostController {
                         @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
                         @RequestParam(value = "size", defaultValue = "30") int size,
                         Model model) {
-        PageResponse<PostDto> pageResponse = service.findAll(search, pageNumber, size);
+        var pageResponse = service.findAll(search, pageNumber, size);
         model.addAttribute("search", search);
         model.addAttribute("page", pageResponse);
         return "index";

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vitrix.repository.ImageRepository;
+import ru.vitrix.service.ImageService;
 
 import java.io.ByteArrayInputStream;
 
@@ -16,14 +16,15 @@ import java.io.ByteArrayInputStream;
 @RequestMapping("/api/v1/images")
 @RequiredArgsConstructor
 public class ImageController {
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getImage(@PathVariable Long id) {
-        var image = imageRepository.findById(id).orElse(null);
+        var image = imageService.findById(id);
         if (image == null) {
             return ResponseEntity.ok(null);
         }
+
         var body = new InputStreamResource(new ByteArrayInputStream(image.getBytes()));
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(image.getContentType()))

@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="ru" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title>Войти</title>
-        <th:block th:replace="~{fragments :: head}" th:remove="tag"></th:block>
+        <title th:text="#{html.user.login.title}"/>
+        <th:block th:replace="~{fragments :: head}" th:remove="tag"/>
+        <th:block th:replace="~{fragments :: js}" th:remove="tag"/>
     </head>
     <body>
         <nav th:replace="~{fragments :: header}"></nav>
@@ -13,12 +14,12 @@
                 <!-- Error messages -->
                 <div th:if="${wrongPasOrLogin}">
                     <div class="alert alert-danger mt-4">
-                        <span th:text="#{user.error.wrong_password_or_login}"></span>
+                        <span th:text="#{html.user.login.error.wrong_password_or_login}"/>
                     </div>
                 </div>
                 <div th:if="${accLocked}">
                     <div class="alert alert-danger mt-4">
-                        <span th:text="#{user.error.account_locked}"></span>
+                        <span th:text="#{html.user.login.error.account_locked}"/>
                     </div>
                 </div>
 
@@ -30,8 +31,8 @@
                            id="login"
                            class="form-control"
                            maxlength="50"
-                           placeholder="Логин"/>
-                    <label for="login">Логин</label>
+                           th:placeholder="#{html.user.label.login}"/>
+                    <label for="login" th:text="#{html.user.label.login}"/>
                 </div>
 
                 <!-- Password input -->
@@ -44,8 +45,8 @@
                                class="form-control"
                                maxlength="100"
                                aria-describedby="eye"
-                               placeholder="Пароль"/>
-                        <label for="password">Пароль</label>
+                               th:placeholder="#{html.user.label.password}"/>
+                        <label for="password" th:text="#{html.user.label.password}"/>
                     </div>
                     <span class="input-group-text" onclick="password_show_hide();">
                         <i class="fas fa-eye" id="show_eye"></i>
@@ -56,15 +57,15 @@
                 <!-- Submit button -->
                 <input type="submit"
                        class="btn btn-primary btn-block mt-3"
-                       value="Войти"
+                       th:value="#{html.user.label.sign_in}"
                        style="width: 100%">
             </form>
 
             <!-- Register buttons -->
             <div class="text-center mt-5">
-                <p>Еще не зарегистрированы? <a href="/auth/registration">Зарегистрируйтесь</a></p>
+                <span th:text="#{html.user.login.not_registered}"></span>
+                <a href="/auth/registration" th:text="#{html.user.login.sign_up}"/>
             </div>
         </div>
-        <script type="text/javascript" src="/js/index.js"></script>
     </body>
 </html>
