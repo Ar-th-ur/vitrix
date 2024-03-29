@@ -111,6 +111,7 @@ class UserControllerTest {
         // when
         var result = this.controller.profileByPrincipal(principal, model);
 
+
         // then
         assertEquals(true, model.getAttribute("isOwner"));
         assertEquals(user, model.getAttribute("user"));

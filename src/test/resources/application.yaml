@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:tcp:postgres:16-alpine:///vitrix?TC_DAEMON=true
+    username: vitrix
+    password: vitrix
+  flyway:
+    enabled: false
