@@ -52,7 +52,7 @@ class PostControllerTest {
         // then
         assertEquals("index", result);
         assertEquals("to search", model.getAttribute("search"));
-        assertIterableEquals(pageResponse.getContent(), ((PageResponse) model.getAttribute("page")).getContent());
+        assertEquals(pageResponse.getContent(), ((PageResponse) model.getAttribute("page")).getContent());
 
         verify(this.service).findAll("to search", 0, 1);
         verifyNoMoreInteractions(this.service);
