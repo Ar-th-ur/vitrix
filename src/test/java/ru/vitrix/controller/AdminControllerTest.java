@@ -1,6 +1,5 @@
 package ru.vitrix.controller;
 
-import com.sun.security.auth.UserPrincipal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +25,8 @@ class AdminControllerTest {
     @Test
     void getAllUsers_ValidRequest_ReturnsAdminPanelPage() {
         // given
+        var pageNumber = 0;
+        var pageSize = 2;
         var user1 = UserDto.builder()
                 .username("username 1")
                 .password("password 1")
@@ -36,19 +37,18 @@ class AdminControllerTest {
                 .build();
         var users = List.of(user1, user2);
         var model = new ConcurrentModel();
-        var principal = new UserPrincipal("principal");
 
         doReturn(users).when(this.service)
-                .findAllUsersWithout("principal");
+                .findAllUsers(pageNumber, pageSize);
 
         // when
-        var result = this.controller.getAllUsers(model, principal);
+        var result = this.controller.getAllUsers(pageNumber, pageSize, model);
 
         // then
         assertEquals("admin/panel", result);
         assertEquals(users, model.getAttribute("users"));
 
-        verify(this.service).findAllUsersWithout("principal");
+        verify(this.service).findAllUsers(pageNumber, pageSize);
         verifyNoMoreInteractions(this.service);
     }
 

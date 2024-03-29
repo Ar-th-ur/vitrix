@@ -16,6 +16,7 @@ import ru.vitrix.service.PostService;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,17 +44,17 @@ class PostControllerTest {
                 .build();
 
         doReturn(pageResponse).when(this.service)
-                .findAll("to search");
+                .findAll("to search", 0, 1);
 
         // when
-        var result = this.controller.posts("to search", model);
+        var result = this.controller.posts("to search", 0, 1, model);
 
         // then
         assertEquals("index", result);
         assertEquals("to search", model.getAttribute("search"));
         assertEquals(pageResponse.getContent(), ((PageResponse) model.getAttribute("page")).getContent());
 
-        verify(this.service).findAll("to search");
+        verify(this.service).findAll("to search", 0, 1);
         verifyNoMoreInteractions(this.service);
     }
 

@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.vitrix.service.AdminService;
 
-import java.security.Principal;
-
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -15,8 +13,10 @@ public class AdminController {
     private final AdminService service;
 
     @GetMapping("/panel")
-    public String getAllUsers(Model model, Principal principal) {
-        var users = service.findAllUsersWithout(principal.getName());
+    public String getAllUsers(@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                              Model model) {
+        var users = service.findAllUsers(pageNumber, pageSize);
         model.addAttribute("users", users);
         return "admin/panel";
     }
