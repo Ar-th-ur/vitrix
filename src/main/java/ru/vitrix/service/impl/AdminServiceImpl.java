@@ -39,7 +39,6 @@ public class AdminServiceImpl implements AdminService {
     public void banUserById(Long id) {
         var user = findById(id);
         user.setAccountLocked(true);
-        userRepository.save(user);
     }
 
     @Override
@@ -47,7 +46,6 @@ public class AdminServiceImpl implements AdminService {
     public void unbanUserById(Long id) {
         var user = findById(id);
         user.setAccountLocked(false);
-        userRepository.save(user);
     }
 
     private UserEntity findById(Long id) {

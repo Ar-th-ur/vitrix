@@ -5,7 +5,7 @@ import ru.vitrix.dto.PageResponse;
 import ru.vitrix.dto.PostDto;
 
 public interface PostService {
-    void save(PostDto postRequest, String username, MultipartFile file);
+    PostDto save(PostDto postRequest, String username, MultipartFile file);
 
     void deleteById(Long id);
 

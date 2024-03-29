@@ -17,25 +17,25 @@ public class AuthenticationController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "accLocked", defaultValue = "false") boolean accLocked,
-                        @RequestParam(value = "wrongPasOrLogin", defaultValue = "false") boolean wrongPasOrLogin,
-                        Model model) {
+    public String getLoginPage(@RequestParam(value = "accLocked", defaultValue = "false") boolean accLocked,
+                               @RequestParam(value = "wrongPasOrLogin", defaultValue = "false") boolean wrongPasOrLogin,
+                               Model model) {
         model.addAttribute("accLocked", accLocked);
         model.addAttribute("wrongPasOrLogin", wrongPasOrLogin);
         return "user/login";
     }
 
     @GetMapping("/registration")
-    public String registration(@ModelAttribute("user") UserDto userDto,
-                               @RequestParam(value = "error", defaultValue = "false") boolean registrationError,
-                               Model model) {
+    public String getRegistrationPage(@ModelAttribute("user") UserDto userDto,
+                                      @RequestParam(value = "error", defaultValue = "false") boolean registrationError,
+                                      Model model) {
         model.addAttribute("error", registrationError);
         return "user/registration";
     }
 
     @PostMapping("/registration")
-    public String register(@ModelAttribute("user") UserDto userDto,
-                           @RequestParam(value = "file") MultipartFile file) {
+    public String registration(@ModelAttribute("user") UserDto userDto,
+                               @RequestParam(value = "file") MultipartFile file) {
         var username = userDto.getUsername();
         if (userService.existByUsername(username)) {
             return "redirect:/auth/registration?error=true";

@@ -18,9 +18,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/profile/{id}")
-    public String profile(@PathVariable Long id, Principal principal, Model model) {
+    public String profileById(@PathVariable Long id, Principal principal, Model model) {
         var userDto = userService.getById(id);
-        boolean isOwner = false;
+        var isOwner = false;
         if (principal != null) {
             isOwner = Objects.equals(userDto.getUsername(), principal.getName());
         }
@@ -31,10 +31,10 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile(Principal principal, Model model) {
+    public String profileByPrincipal(Principal principal, Model model) {
         var username = principal.getName();
         var userDto = userService.getByUsername(username);
-        boolean isOwner = Objects.equals(userDto.getUsername(), username);
+        var isOwner = Objects.equals(userDto.getUsername(), username);
 
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("user", userDto);

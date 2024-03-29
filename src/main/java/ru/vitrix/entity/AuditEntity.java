@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @MappedSuperclass
-@ToString(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseAuditEntity extends BaseEntity implements Serializable {
+public abstract class AuditEntity implements Serializable {
     @CreatedDate
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss")
     @Column(name = "created_at")

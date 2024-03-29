@@ -20,7 +20,12 @@ import static jakarta.persistence.CascadeType.*;
 @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"avatar", "password", "posts"})
 @Table(name = "users")
-public class UserEntity extends BaseAuditEntity implements UserDetails {
+public class UserEntity extends AuditEntity implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
+    private Long id;
+
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -28,7 +33,7 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
     private String password;
 
     @Column(name = "is_account_locked", nullable = false)
-    private boolean isAccountLocked;
+    private boolean isAccountLocked = false;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)

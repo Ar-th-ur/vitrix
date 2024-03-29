@@ -28,16 +28,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void save(PostDto postDto, String username, MultipartFile file) {
-        var post = mapper.toEntity(postDto);
+    public PostDto save(PostDto postDto, String username, MultipartFile file) {
+        var postEntity = mapper.toEntity(postDto);
         var owner = userService.findByUsername(username);
         var imageEntity = imageService.fromFile(file);
 
-        post.setImage(imageEntity);
-        post.setOwner(owner);
-        owner.getPosts().add(post);
+        postEntity.setImage(imageEntity);
+        postEntity.setOwner(owner);
+        owner.getPosts().add(postEntity);
 
-        log.info("Saving new post {}", imageEntity);
+        log.info("Saving new postEntity {}", imageEntity);
+        return mapper.toDto(postEntity);
     }
 
     @Transactional
@@ -52,7 +53,7 @@ public class PostServiceImpl implements PostService {
         if (filter.isBlank()) {
             page = postRepository.findAll(pageRequest);
         } else {
-            page = postRepository.findAllByTitle(filter, pageRequest);
+            page = postRepository.findAllByTitle("%" + filter + "%", pageRequest);
         }
         var content = page.getContent().stream().map(mapper::toDto).toList();
 

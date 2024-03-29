@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(UserDto userDto, MultipartFile file) {
+    public UserDto save(UserDto userDto, MultipartFile file) {
         var user = mapper.toEntity(userDto);
         var password = userDto.getPassword();
         var image = imageService.fromFile(file);
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
 
         log.info("Saving new user {}", user);
-        mapper.toDto(user);
+        return mapper.toDto(user);
     }
 
 

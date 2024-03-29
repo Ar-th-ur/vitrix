@@ -1,9 +1,7 @@
 package ru.vitrix.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -14,7 +12,12 @@ import lombok.*;
 @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"bytes"})
 @Table(name = "images")
-public class ImageEntity extends BaseAuditEntity {
+public class ImageEntity extends AuditEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
+    private Long id;
+
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
