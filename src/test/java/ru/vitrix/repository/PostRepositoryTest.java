@@ -22,22 +22,18 @@ class PostRepositoryTest {
     void findAllByTitle_ReturnsPageOfPostsWithoutLockedAccounts() {
         // given
         var filter = "%titlE%";
-        var page = PageRequest.of(0, 5);
 
         // when
-        var productsList = this.repository.findAllByTitle(filter, page).getContent();
+        var products = this.repository.findAllByTitle(filter);
 
         // then
-        assertEquals(3, productsList.size());
+        assertEquals(3, products.size());
     }
 
     @Test
     void findAll_ReturnsPageOfPostsWithoutLockedAccounts() {
-        // given
-        var page = PageRequest.of(0, 5);
-
         // when
-        var productsList = this.repository.findAll(page).getContent();
+        var productsList = this.repository.findAll();
 
         // then
         assertEquals(4, productsList.size());

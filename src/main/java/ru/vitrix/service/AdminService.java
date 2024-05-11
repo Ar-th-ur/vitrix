@@ -5,7 +5,7 @@ import ru.vitrix.dto.UserDto;
 import java.util.List;
 
 public interface AdminService {
-    List<UserDto> findAllUsers(int pageNumber, int pageSize);
+    List<UserDto> findAllUsersWithout(String username);
 
     void banUserById(Long id);
 

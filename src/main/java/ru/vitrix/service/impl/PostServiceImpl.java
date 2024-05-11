@@ -2,12 +2,9 @@ package ru.vitrix.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.vitrix.dto.PageResponse;
 import ru.vitrix.dto.PostDto;
 import ru.vitrix.dto.mapper.PostMapper;
 import ru.vitrix.entity.PostEntity;
@@ -16,6 +13,8 @@ import ru.vitrix.service.ImageService;
 import ru.vitrix.service.PostService;
 import ru.vitrix.service.UserService;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class PostServiceImpl implements PostService {
     private final ImageService imageService;
     private final UserService userService;
 
-    private final PostRepository postRepository;
+    private final PostRepository repository;
     private final PostMapper mapper;
 
     @Override
@@ -41,29 +40,22 @@ public class PostServiceImpl implements PostService {
         return mapper.toDto(postEntity);
     }
 
+    @Override
     @Transactional
     public void deleteById(Long id) {
-        postRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
+    @Override
     @Transactional
-    public PageResponse<PostDto> findAll(String filter, int pageNo, int size) {
-        var pageRequest = PageRequest.of(pageNo, size);
-        Page<PostEntity> page;
+    public List<PostDto> findAll(String filter) {
+        List<PostEntity> posts;
         if (filter.isBlank()) {
-            page = postRepository.findAll(pageRequest);
+            posts = repository.findAll();
         } else {
-            page = postRepository.findAllByTitle("%" + filter + "%", pageRequest);
+            posts = repository.findAllByTitle("%" + filter + "%");
         }
-        var content = page.getContent().stream().map(mapper::toDto).toList();
 
-        return PageResponse.<PostDto>builder()
-                .last(page.isLast())
-                .content(content)
-                .pageSize(size)
-                .pageNumber(pageNo)
-                .totalPages(page.getTotalPages())
-                .totalElements(page.getTotalElements())
-                .build();
+        return posts.stream().map(mapper::toDto).toList();
     }
 }

@@ -11,6 +11,7 @@ import ru.vitrix.dto.PostDto;
 import ru.vitrix.service.PostService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/posts")
@@ -20,12 +21,10 @@ public class PostController {
 
     @GetMapping
     public String posts(@RequestParam(value = "search", defaultValue = "") String search,
-                        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-                        @RequestParam(value = "size", defaultValue = "30") int size,
                         Model model) {
-        PageResponse<PostDto> pageResponse = service.findAll(search, pageNumber, size);
+        List<PostDto> posts = service.findAll(search);
         model.addAttribute("search", search);
-        model.addAttribute("page", pageResponse);
+        model.addAttribute("posts", posts);
         return "index";
     }
 

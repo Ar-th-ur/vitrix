@@ -11,7 +11,7 @@ import ru.vitrix.dto.UserDto;
 import ru.vitrix.dto.mapper.UserMapper;
 import ru.vitrix.entity.Role;
 import ru.vitrix.entity.UserEntity;
-import ru.vitrix.exception.NotFoundException;
+import ru.vitrix.exception.UserNotFoundException;
 import ru.vitrix.repository.UserRepository;
 import ru.vitrix.service.ImageService;
 import ru.vitrix.service.UserService;
@@ -48,13 +48,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(username);
     }
 
-    @Override
-    public UserEntity findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(
-                        () -> new NotFoundException("User with id \"%s\" not found".formatted(id))
-                );
-    }
 
     @Override
     public UserDto getById(Long id) {
@@ -76,4 +69,10 @@ public class UserServiceImpl implements UserService {
                 );
     }
 
+    private UserEntity findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(
+                        () -> new UserNotFoundException("User with id \"%s\" not found".formatted(id))
+                );
+    }
 }

@@ -9,8 +9,6 @@ public interface UserService {
 
     boolean existByUsername(String username);
 
-    UserEntity findById(Long id);
-
     UserDto getById(Long id);
 
     UserEntity findByUsername(String username);
