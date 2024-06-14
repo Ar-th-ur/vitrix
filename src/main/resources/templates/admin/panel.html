@@ -21,7 +21,7 @@
                         <td>
                             <a th:href="@{/user/profile/{id}(id = ${user.id})}" th:text="${user.username}"/>
                         </td>
-                        <td th:text="${user.accountLocked ? #{html.admin.panel.user.locked} : #{html.admin.panel.user.not_locked}}"/>
+                        <td th:text="${user.accountLocked} ? #{html.admin.panel.user.locked} : #{html.admin.panel.user.not_locked}"/>
                         <td>
                             <form th:if="${user.accountLocked}"
                                   th:action="@{/admin/unban-user/{id}(id = ${user.id})}"

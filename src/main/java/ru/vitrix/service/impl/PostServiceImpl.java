@@ -37,7 +37,9 @@ public class PostServiceImpl implements PostService {
         postEntity.setOwner(owner);
         owner.getPosts().add(postEntity);
 
+        postRepository.save(postEntity);
         log.info("Saving new postEntity {}", imageEntity);
+
         return mapper.toDto(postEntity);
     }
 
